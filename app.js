@@ -26,10 +26,18 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/registerbusiness', async (req, res) => {
-    const biz = new Business({name: 'HMVA', address: '139 The Queens Drive', numOfDesks: 25, businessCode: 'HMVA94'})
-    await biz.save()
-    res.send(biz)
+app.get('/myoffices', async (req, res) => {
+    const business = await Business.find({})
+    res.render('business/index', {business})
+})
+
+app.get('/myoffices/new', (req,res) => {
+    res.render('business/new')
+})
+
+app.get('/myoffices/:id', async (req,res) => {
+    const business = await Business.findById(req.params.id)
+    res.render('business/show', {business})
 })
 
 app.listen(3000, () => {

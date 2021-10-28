@@ -1,0 +1,9 @@
+<%- layout('layouts/boilerplate') %> 
+
+<h1>All businesses</h1>
+<ul>
+    <% for(let details of business){ %> 
+        <li><a href="/myoffices/<%= details._id %>"><%= details.name %></a></li>
+    <% } %> 
+</ul>
+
