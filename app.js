@@ -20,7 +20,10 @@ app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
+app.use(express.urlencoded({extended: true}));
+
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get('/', (req, res) => {
     res.render('home')
@@ -31,6 +34,12 @@ app.get('/myoffices', async (req, res) => {
     res.render('business/index', {business})
 })
 
+app.post('/myoffices', async (req, res) => {
+    const business = new Business(req.body.business)
+    await business.save()
+    res.redirect(`myoffices/${business._id}`)
+})
+
 app.get('/myoffices/new', (req,res) => {
     res.render('business/new')
 })
@@ -38,6 +47,11 @@ app.get('/myoffices/new', (req,res) => {
 app.get('/myoffices/:id', async (req,res) => {
     const business = await Business.findById(req.params.id)
     res.render('business/show', {business})
+})
+
+app.get('/myoffices/:id/edit', async (req, res) => {
+    const business = await Business.findById(req.params.id)
+    res.render('business/edit', {business})
 })
 
 app.listen(3000, () => {
