@@ -6,3 +6,7 @@
 
 <a class="btn btn-primary btn-sm" href="/myoffices">View all offices</a>
 <a class="btn btn-warning btn-sm" href="/myoffices/<%= business._id %>/edit">Edit office</a>
+
+<form class="d-inline" action="/myoffices/<%= business._id %>?_method=DELETE" method="POST">
+    <input class="btn btn-danger btn-sm" type="submit" value="Delete Office">
+</form>

@@ -3,6 +3,7 @@ const app = express()
 const path = require('path')
 const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
+const methodOverride = require('method-override')
 const Business = require('./models/business')
 
 mongoose.connect('mongodb://localhost:27017/hot-desk', {
@@ -21,6 +22,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method'))
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -52,6 +54,22 @@ app.get('/myoffices/:id', async (req,res) => {
 app.get('/myoffices/:id/edit', async (req, res) => {
     const business = await Business.findById(req.params.id)
     res.render('business/edit', {business})
+})
+
+app.put('/myoffices/:id', async (req, res) => {
+    const {id} = req.params
+    await Business.findByIdAndUpdate(id, {...req.body.business})
+    res.redirect(`${id}`)
+})
+
+app.delete('/myoffices/:id', async (req, res) => {
+    const {id} = req.params
+    await Business.findByIdAndDelete(id)
+    res.redirect('/myoffices')
+})
+
+app.get('*', (req, res) => {
+    res.render('404')
 })
 
 app.listen(3000, () => {
