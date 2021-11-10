@@ -1,9 +1,26 @@
-<%- layout('layouts/boilerplate') %> 
+<%- layout('layouts/boilerplate') %>
 
-<h1>All businesses</h1>
-<ul>
-    <% for(let details of business){ %> 
-        <li><a href="/myoffices/<%= details._id %>"><%= details.name %></a></li>
+<div class="container mt-5">
+    <h1 class="display-3">My Offices</h1>
+
+    <% for(let biz of business){ %> 
+        <div class="card mb-3" style="max-width: 800px;">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img src="https://images.pexels.com/photos/373883/pexels-photo-373883.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=280&w=280" class="img-fluid rounded-start" alt="...">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><a href="/myoffices/<%= biz._id %>"><%= biz.name %></a></h5>
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text"><small class="text-muted"><%= biz.address %> </small></p>
+                </div>
+              </div>
+            </div>
+          </div>    
+
     <% } %> 
-</ul>
+
+
+</div>
 

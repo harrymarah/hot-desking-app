@@ -68,8 +68,8 @@ app.delete('/myoffices/:id', async (req, res) => {
     res.redirect('/myoffices')
 })
 
-app.get('*', (req, res) => {
-    res.render('404')
+app.all('*', (req, res) => {
+    res.status(404).render('404')
 })
 
 app.listen(3000, () => {
