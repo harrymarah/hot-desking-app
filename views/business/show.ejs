@@ -1,12 +1,48 @@
 <%- layout('layouts/boilerplate') %> 
 
-<h1>Business show page!</h1>
 
-<p>Welcome to <%= business.name %> </p>
 
-<a class="btn btn-primary btn-sm" href="/myoffices">View all offices</a>
-<a class="btn btn-warning btn-sm" href="/myoffices/<%= business._id %>/edit">Edit office</a>
+<div class="container my-5">
+    <div class="row justify-content-md-center">
+        <div class="col-7">
+            <h2 class="display-4">
+                Welcome to <%= business.name %>
+            </h2>
+            <h5  class="text-muted"><%= business.address %> </h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa dolorem illo rem expedita quod aspernatur quae perferendis quo pariatur ad deleniti incidunt fugiat veritatis eum, nemo vero possimus beatae, quaerat voluptatem, cupiditate sed? Excepturi vitae deleniti laborum obcaecati eligendi adipisci repellat voluptas praesentium, facilis rerum sequi atque facere vel odio.</p>
+            <a class="btn btn-primary btn-sm" href="/myoffices">View all offices</a>
+            <a class="btn btn-warning btn-sm" href="/myoffices/<%= business._id %>/edit">Edit office</a>
+            <form class="d-inline" action="/myoffices/<%= business._id %>?_method=DELETE" method="POST">
+                <input class="btn btn-danger btn-sm" type="submit" value="Delete Office">
+            </form>
+            <a href="#" class="btn btn-info btn-sm">Make a booking</a>
+        </div>
+        <div class="col-3">
+            <div class="float-end">
+                <h5 class="float-end mb-0">Floorplan</h5>
+                <p class="text-muted"><small><em>Click to enlarge</em></small></p>
+            </div>
+            <img class="img-fluid" src="https://i.pinimg.com/736x/bd/d6/f5/bdd6f5247dbea0e5eedf33fe8cc491ee--office-layout-plan-office-floor-plan.jpg" alt="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        </div>
+    </div>
+</div>
 
-<form class="d-inline" action="/myoffices/<%= business._id %>?_method=DELETE" method="POST">
-    <input class="btn btn-danger btn-sm" type="submit" value="Delete Office">
-</form>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img class="img-fluid mx-auto d-block" src="https://i.pinimg.com/736x/bd/d6/f5/bdd6f5247dbea0e5eedf33fe8cc491ee--office-layout-plan-office-floor-plan.jpg" alt="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
