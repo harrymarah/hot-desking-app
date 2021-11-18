@@ -1,0 +1,19 @@
+<%- layout('layouts/boilerplate') %> 
+
+<h1 class="p-2">Add your company</h1>
+
+<form class="p-2" action="/company/<%= company._id %>?_method=PUT" method="POST">
+    <div class="my-3">
+        <label for="name">Company Name:</label>
+        <input type="text" id="name" name="company[companyName]" value="<%= company.companyName %>">
+    </div>
+    <div class="my-3">
+        <label for="name">Company Logo Link:</label>
+        <input type="text" id="name" name="company[companyLogo]" value="<%= company.companyLogo %>">
+    </div>
+    <div class="my-3">
+        <label for="businessCode">Unique Business Code:</label>
+        <input type="text" id="businessCode" name="company[uniqueCompanyCode]" value="<%= company.uniqueCompanyCode%>">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Update">
+</form>

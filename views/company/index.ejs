@@ -1,9 +1,9 @@
 <%- layout('layouts/boilerplate') %>
 
 <div class="container mt-5">
-    <h1 class="display-3">My Offices</h1>
+    <h1 class="display-3">My Companies</h1>
 
-    <% for(let biz of business){ %> 
+    <% for(let details of company){ %> 
         <div class="card mb-3" style="max-width: 800px;">
             <div class="row g-0">
               <div class="col-md-4">
@@ -11,10 +11,10 @@
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title"><a href="/myoffices/<%= biz._id %>"><%= biz.name %></a></h5>
+                  <h5 class="card-title"><a href="/company/<%= details._id %>"><%= details.companyName %></a></h5>
                   <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <p class="card-text"><small class="text-muted"><%= biz.address %> </small></p>
-                  <a class='btn btn-outline-warning btn-sm' href="/myoffices/<%= biz._id %>">View <%= biz.name %></a>
+                  <!-- <p class="card-text"><small class="text-muted"><%= details.address %> </small></p> -->
+                  <a class='btn btn-outline-warning btn-sm' href="/company/<%= details._id %>">View <%= details.companyName %></a>
                 </div>
               </div>
             </div>

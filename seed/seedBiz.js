@@ -35,25 +35,3 @@ module.exports = businessDetails = [
         businessCode: 'HMVA94'
     },
 ]
-
-
-
-module.exports = companyDetails = [
-    {
-        companyName: 'HMVA',
-        companyLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/2560px-H%26M-Logo.svg.png',
-        uniqueCompanyCode: 'HMVA94',
-        companyPasscode: 'PASSCODE-HMVA',
-        employees: [],
-        offices: {
-            officeAddress: {
-                streetAddress: '139 The Queens Drive',
-                town: 'Rickmansworth',
-                county: 'Herts',
-                postcode: 'WD3 8LY'
-            },
-            floorPlan: 'https://i.pinimg.com/736x/bd/d6/f5/bdd6f5247dbea0e5eedf33fe8cc491ee--office-layout-plan-office-floor-plan.jpg',
-            desks: []
-        }
-    }
-]

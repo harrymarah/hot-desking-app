@@ -1,0 +1,16 @@
+<%- layout('layouts/boilerplate') %> 
+
+<h1 class="p-2">Add your office</h1>
+
+<form class="p-2" action="/company/<%= company._id %>/office" method="POST">
+    <div class="my-3">
+        <label for="name">Office Name:</label>
+        <input type="text" id="name" name="office[officeNickname]">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+
+
+
+
+

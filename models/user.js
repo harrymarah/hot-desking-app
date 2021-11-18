@@ -21,6 +21,7 @@ const UserSchema = new Schema({
     ]
 })
 
+module.exports = mongoose.model('User', UserSchema);
 
 //need to install package
 // UserSchema.plugin(passportLocalMongoose);

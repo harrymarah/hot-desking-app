@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const bookingSchema = new Schema({
+const BookingSchema = new Schema({
     bookedFrom: Date,
     bookedTo: Date,
     bookedBy: {
@@ -10,3 +10,4 @@ const bookingSchema = new Schema({
     }
 })
 
+module.exports = mongoose.model('Booking', BookingSchema);

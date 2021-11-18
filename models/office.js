@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 
 const OfficeSchema = new Schema({
+    officeNickname: String,
     officeAddress:{
         streetAddress: String,
         town: String,
@@ -20,3 +21,5 @@ const OfficeSchema = new Schema({
         }
     ]
 })
+
+module.exports = mongoose.model('Office', OfficeSchema);

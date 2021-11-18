@@ -3,7 +3,7 @@ const Company = require('../models/company')
 const Office = require('../models/office')
 const Booking = require('../models/booking')
 const User = require('../models/user')
-const companyDetails = require('../seed/seedBiz')
+const companyDetails = require('../seed/seedCompany')
 
 
 mongoose.connect('mongodb://localhost:27017/hot-desk', {
@@ -18,7 +18,7 @@ db.once("open", () => {
 })
 
 const seedDB = async () => {
-    await Company.remove({})
+    await Company.deleteMany({})
     for(let i = 0; i < companyDetails.length; i++){
         const b = new Company(companyDetails[i])
         await b.save()
