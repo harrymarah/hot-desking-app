@@ -52,7 +52,7 @@ app.get('/company/new', (req,res) => {
 })
 
 app.get('/company/:id', async (req,res) => {
-    const company = await Company.findById(req.params.id)
+    const company = await (await Company.findById(req.params.id)).populate({path: 'offices'})
     res.render('company/show', {company})
 })
 
@@ -69,11 +69,14 @@ app.get('/company/:id/newoffice', async (req, res) => {
 app.post('/company/:id/office', async (req, res) => {
     const {id} = req.params
     const company = await Company.findById(id)
-    const office = new Office(req.body.office._id)
+    const office = new Office(req.body.office)
     company.offices.push(office)
+    for(let i = 0; i < req.body.noOfDesks; i++){
+        await office.desks.push({deskNumber: i + 1})
+    }
     await company.save()
     await office.save()
-    res.send('complete')
+    res.redirect(`/company/${company._id}`)
 })
 
 app.put('/company/:id', async (req, res) => {
