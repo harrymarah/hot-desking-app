@@ -1,0 +1,39 @@
+<%- layout('layouts/boilerplate') %> 
+
+<div class="container mt-5">
+    <h1 class="p-2 display-3">Edit your office</h1>
+
+    <form class="p-2" action="/company/<%= office._id %>?_method=PUT" method="POST">
+        <div class="my-3">
+            <label class="form-label" for="name">Office Nickname:</label>
+            <input class="form-control"  type="text" id="name" name="office[officeNickname]" value="<%= office.officeNickname %>">
+        </div>
+        <div class="my-3">
+            <label class="form-label" for="streetAddress">Street Address:</label>
+            <input class="form-control" type="text" id="streetAddress" name="office[officeAddress][streetAddress]" value="<%= office.officeAddress.streetAddress %>">
+        </div>
+        <div class="my-3">
+            <label class="form-label" for="town">Town:</label>
+            <input class="form-control" type="text" id="town" name="office[officeAddress][town]" value="<%= office.officeAddress.town %>">
+        </div>
+        <div class="my-3">
+            <label class="form-label" for="county">County/City:</label>
+            <input class="form-control" type="text" id="county" name="office[officeAddress][county]" value="<%= office.officeAddress.county %>">
+        </div>
+        <div class="my-3">
+            <label class="form-label" for="postcode">Postcode:</label>
+            <input class="form-control" type="text" id="postcode" name="office[officeAddress][postcode]" value="<%= office.officeAddress.postcode %>">
+        </div>
+        <div class="my-3">
+            <label class="form-label" for="floorplan">Floor plan:</label>
+            <input class="form-control" type="text" id="floorplan" name="office[floorPlan]" value="<%= office.floorPlan %>">
+        </div>
+        <div class="my-3">
+            <label class="form-label" for="noOfDesks">Number of desks:</label>
+            <input class="form-control" type="number" id="noOfDesks" name="noOfDesks" value="<%= office.desks.length %>">
+        </div>
+                
+        <input class="btn btn-primary" type="submit" value="Update">
+    </form>
+</div>
+

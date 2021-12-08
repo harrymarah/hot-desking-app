@@ -25,7 +25,26 @@
     <div class="row justify-content-md-center">
       <div class="col-10 mt-5">
         <h2 class="display-6">My Offices</h2>
-        <p><%= company.offices %> </p>
+        <div class="office-cards d-flex mx-auto">
+          <% for(let i = 0; i < company.offices.length; i++){ %> 
+            <div class="card m-3" style="width: 18rem;">
+              <!-- <img src="" class="card-img-top" alt="..."> -->
+              <div class="card-body">
+                <h5 class="card-title"><%= company.offices[i].officeNickname %></h5>
+                <p class="card-text"><%= company.offices[i].officeAddress.streetAddress %></p>
+                <a href="/company/<%= company._id %>/<%= company.offices[i]._id %>" class="btn btn-outline-primary btn-sm">View office</a>
+                <a href="/company/<%= company._id %>/<%= company.offices[i]._id %>/edit" class="btn btn-outline-warning btn-sm">Edit office</a>
+              </div>
+            </div>
+          <% } %> 
+        </div>
+        
+
+
+        
+
+        <p></p>
+        <p></p>
       </div>
       
     </div>
