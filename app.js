@@ -91,14 +91,26 @@ app.delete('/company/:id', async (req, res) => {
     res.redirect('/company')
 })
 
-app.get('/company/:id/:officeid', (req, res) => {
-    res.send('working')
+app.get('/company/:id/:officeid', async (req, res) => {
+    const office = await Office.findById(req.params.officeid)
+    const company = await Company.findById(req.params.id)
+    res.render('office/show', {office, company})
 })
 
 app.get('/company/:id/:officeid/edit', async (req, res) => {
     const office = await Office.findById(req.params.officeid)
-    res.render('office/edit', {office})
+    const company = await Company.findById(req.params.id)
+    res.render('office/edit', {office, company})
 })
+
+app.put('/company/:id/:officeid', async (req, res) => {
+    const {officeid, id} = req.params
+    const office = await Office.findById(req.params.officeid)
+    await Office.findByIdAndUpdate(officeid, {...req.body.office})
+    res.redirect(`${officeid}`)
+})
+
+
 
 app.all('*', (req, res) => {
     res.status(404).render('404')

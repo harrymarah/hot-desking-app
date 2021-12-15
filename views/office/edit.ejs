@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <h1 class="p-2 display-3">Edit your office</h1>
 
-    <form class="p-2" action="/company/<%= office._id %>?_method=PUT" method="POST">
+    <form class="p-2" action="/company/<%= company._id %>/<%= office._id %>?_method=PUT" method="POST">
         <div class="my-3">
             <label class="form-label" for="name">Office Nickname:</label>
             <input class="form-control"  type="text" id="name" name="office[officeNickname]" value="<%= office.officeNickname %>">
