@@ -3,18 +3,25 @@
 <div class="container mt-5">
     <h1 class="p-2 display-3">Edit your company</h1>
 
-    <form class="p-2" action="/company/<%= company._id %>?_method=PUT" method="POST">
+    <form class="p-2 needs-validation" action="/company/<%= company._id %>?_method=PUT" method="POST" novalidate>
         <div class="my-3">
             <label class="form-label" for="name">Company Name:</label>
-            <input class="form-control"  type="text" id="name" name="company[companyName]" value="<%= company.companyName %>">
+            <input class="form-control"  type="text" id="name" name="company[companyName]" value="<%= company.companyName %>" required>
+
+            <div class="invalid-feedback">Company name is required.</div>
+
         </div>
         <div class="my-3">
             <label class="form-label" for="name">Company Logo Link:</label>
-            <input class="form-control"  type="text" id="name" name="company[companyLogo]" value="<%= company.companyLogo %>">
+            <input class="form-control"  type="text" id="name" name="company[companyLogo]" value="<%= company.companyLogo %>" required>
+
+            <div class="invalid-feedback">Company logo image is required.</div>
         </div>
         <div class="my-3">
             <label class="form-label" for="businessCode">Unique Business Code:</label>
-            <input class="form-control"  type="text" id="businessCode" name="company[uniqueCompanyCode]" value="<%= company.uniqueCompanyCode%>">
+            <input class="form-control"  type="text" id="businessCode" name="" value="<%= company.uniqueCompanyCode%>" required disabled readonly>
+
+            <div class="invalid-feedback">Unique company code is required.</div>
         </div>
         <input class="btn btn-primary" type="submit" value="Update">
     </form>

@@ -3,24 +3,36 @@
 <div class="container mt-5">
     <h1 class="p-2 display-3">Add your company</h1>
 
-    <form class="p-2" action="/company" method="POST">
+    <form class="p-2 needs-validation" action="/company" method="POST" novalidate>
         <div class="my-3">
+
             <label class="form-label" for="name">Company Name:</label>
-            <input class="form-control" type="text" id="name" name="company[companyName]">
+            <input class="form-control" type="text" id="name" name="company[companyName]" required>
+            
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please add your company name.</div>
+
         </div>
         <div class="my-3">
             <label class="form-label" for="name">Company Logo Link:</label>
-            <input class="form-control" type="text" id="name" name="company[companyLogo]">
+            <input class="form-control" type="text" id="name" name="company[companyLogo]" required>
+
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please upload an image of your company logo.</div>
+
         </div>
         <div class="my-3">
             <label class="form-label" for="businessCode">Unique Business Code:</label>
-            <input class="form-control" type="text" id="businessCode" name="company[uniqueCompanyCode]">
+            <input class="form-control" type="text" id="businessCode" name="company[uniqueCompanyCode]" required>
+
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter a unique company ID that your employees can use to connect with the business.</div>
+
         </div>
         <input class="btn btn-primary" type="submit" value="Submit">
     </form>
     
 </div>
-
 
 
 

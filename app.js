@@ -110,8 +110,6 @@ app.put('/company/:id/:officeid', async (req, res) => {
     res.redirect(`${officeid}`)
 })
 
-
-
 app.all('*', (req, res) => {
     res.status(404).render('404')
 })
