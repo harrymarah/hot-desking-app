@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const BookingSchema = new Schema({
-    bookedFrom: Date,
-    bookedTo: Date,
+    bookingDate: Date,
+    bookedAM: Boolean,
+    bookedPM: Boolean,
     bookedBy: {
         type: Schema.Types.ObjectId,
         ref: "User"

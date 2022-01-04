@@ -3,12 +3,72 @@
 
 <div class="container my-5">
     <div class="row justify-content-md-center">
-        <div class="col-10">
-          
+        <div class="col-8">
             <h2 class="display-5">Welcome to <%= office.officeAddress.streetAddress %></h2>
             <h4 class="text-muted"><em><%= office.officeNickname %></em></h4>
-            <h6 class=""><em><%= company.companyName %></em></h5>
-            
+            <h6 class=""><em><%= company.companyName %></em></h5>  
+                
+                
+            <h2 class="mt-5">Make a booking:</h2>
+
+            <form action="">
+                <div class="row mb-3">
+                    <select class="form-select form-select-lg col mx-3" aria-label=".form-select-lg example">
+                        <option selected>Select a desk</option>
+                        <% for(let i = 0; i < office.desks.length; i++){ %>
+                            <option value="<%= i %>">Desk <%= i + 1 %></option>                    
+                        <% } %> 
+                    </select>
+        
+                    <input placeholder="Selected date" type="date" id="date-picker-example" class="form-control datepicker col mx-3">
+                    
+
+                    <div class="mt-3 d-flex justify-content-between">
+                        <div>
+                            <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+                            <label class="btn btn-outline-primary btn-lg" for="option1">AM</label>
+    
+                            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                            <label class="btn btn-outline-primary btn-lg" for="option2">PM</label>
+    
+                            <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+                            <label class="btn btn-outline-primary btn-lg" for="option3">All Day</label>
+                        </div>
+                        
+
+                        <input class="btn btn-success btn-lg align-self-end" type="submit" value="Submit">
+                    </div>
+                    
+                </div>
+            </form>
+
         </div>  
+
+        <div class="col-4 mt-5">
+            <div class="float-end mb-0">
+                <h5 class="mb-0">Floorplan</h5>
+                <p class="text-muted"><small><em>Click to enlarge</em></small></p>
+            </div>
+            <img class="img-fluid" src="<%= office.floorPlan %>" alt="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        </div>
     </div>
 </div>
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img class="img-fluid mx-auto d-block" src="<%= office.floorPlan %>" alt="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
