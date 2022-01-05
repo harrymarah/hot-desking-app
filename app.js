@@ -5,11 +5,11 @@ const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
-const Booking = require('./models/booking')
 const User = require('./models/user')
 
 const companies = require('./routes/company')
 const offices = require('./routes/office')
+const bookings = require('./routes/booking')
 
 mongoose.connect('mongodb://localhost:27017/hot-desk', {
     useNewUrlParser: true,
@@ -38,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.use('/company', companies)
 app.use('/company/:id', offices)
+app.use('/company/:id/:officeid/bookings', bookings)
 
 app.all('*', (req, res) => {
     res.status(404).render('404')

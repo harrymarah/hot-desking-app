@@ -5,7 +5,11 @@ const BookingSchema = new Schema({
     bookingDate: Date,
     bookedAM: Boolean,
     bookedPM: Boolean,
-    bookedBy: {
+    bookedAMBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+    bookedPMBy: {
         type: Schema.Types.ObjectId,
         ref: "User"
     }
