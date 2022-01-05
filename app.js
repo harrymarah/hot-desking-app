@@ -5,11 +5,11 @@ const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 
-const Business = require('./models/business')
-const Company = require('./models/company')
-const Office = require('./models/office')
 const Booking = require('./models/booking')
 const User = require('./models/user')
+
+const companies = require('./routes/company')
+const offices = require('./routes/office')
 
 mongoose.connect('mongodb://localhost:27017/hot-desk', {
     useNewUrlParser: true,
@@ -36,79 +36,8 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/company', async (req, res) => {
-    const company = await Company.find({})
-    res.render('company/index', {company})
-})
-
-app.post('/company', async (req, res) => {
-    const company = new Company(req.body.company)
-    await company.save()
-    res.redirect(`company/${company._id}`)
-})
-
-app.get('/company/new', (req,res) => {
-    res.render('company/new')
-})
-
-app.get('/company/:id', async (req,res) => {
-    const company = await (await Company.findById(req.params.id)).populate({path: 'offices'})
-    res.render('company/show', {company})
-})
-
-app.get('/company/:id/edit', async (req, res) => {
-    const company = await Company.findById(req.params.id)
-    res.render('company/edit', {company})
-})
-
-app.get('/company/:id/newoffice', async (req, res) => {
-    const company = await Company.findById(req.params.id)
-    res.render('office/new', {company})
-})
-
-app.post('/company/:id/office', async (req, res) => {
-    const {id} = req.params
-    const company = await Company.findById(id)
-    const office = new Office(req.body.office)
-    company.offices.push(office)
-    for(let i = 0; i < req.body.noOfDesks; i++){
-        await office.desks.push({deskNumber: i + 1})
-    }
-    await company.save()
-    await office.save()
-    res.redirect(`/company/${company._id}`)
-})
-
-app.put('/company/:id', async (req, res) => {
-    const {id} = req.params
-    await Company.findByIdAndUpdate(id, {...req.body.company})
-    res.redirect(`${id}`)
-})
-
-app.delete('/company/:id', async (req, res) => {
-    const {id} = req.params
-    await Company.findByIdAndDelete(id)
-    res.redirect('/company')
-})
-
-app.get('/company/:id/:officeid', async (req, res) => {
-    const office = await Office.findById(req.params.officeid)
-    const company = await Company.findById(req.params.id)
-    res.render('office/show', {office, company})
-})
-
-app.get('/company/:id/:officeid/edit', async (req, res) => {
-    const office = await Office.findById(req.params.officeid)
-    const company = await Company.findById(req.params.id)
-    res.render('office/edit', {office, company})
-})
-
-app.put('/company/:id/:officeid', async (req, res) => {
-    const {officeid, id} = req.params
-    const office = await Office.findById(req.params.officeid)
-    await Office.findByIdAndUpdate(officeid, {...req.body.office})
-    res.redirect(`${officeid}`)
-})
+app.use('/company', companies)
+app.use('/company/:id', offices)
 
 app.all('*', (req, res) => {
     res.status(404).render('404')
