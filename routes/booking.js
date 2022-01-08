@@ -3,20 +3,25 @@ const router = express.Router({mergeParams: true})
 
 const Booking = require('../models/booking')
 const Office = require('../models/office')
+const Company = require('../models/company')
 
 router.post('/', async (req, res) => {
     const booking = new Booking(req.body.booking)
     const office =  await Office.findById(req.params.officeid)
-    const deskNumber = office.desks[req.body.booking.deskIndex]
+    const company = await Company.findById(req.params.id)
+    const {deskIndex} = req.body.booking
+    const deskBooked = office.desks[deskIndex]
 
     if(req.body.booking.bookedAM === 'on') booking.bookedAM = true
     if(req.body.booking.bookedPM === 'on') booking.bookedPM = true
 
-    deskNumber.push(booking)
-    await deskNumber.save()
+    deskBooked.bookings = booking;
 
-    console.log(booking)
-    res.send(deskNumber)
+    await booking.save()
+    await office.save()
+
+    console.log(deskBooked)
+    res.redirect(`/company/${company._id}/${office._id}`)
 })
 
 module.exports = router;
