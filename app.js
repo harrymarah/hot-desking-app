@@ -4,6 +4,7 @@ const path = require('path')
 const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+const ExpressError = require('./utils/ExpressError')
 
 const User = require('./models/user')
 
@@ -40,8 +41,15 @@ app.use('/company', companies)
 app.use('/company/:id', offices)
 app.use('/company/:id/:officeid/bookings', bookings)
 
-app.all('*', (req, res) => {
-    res.status(404).render('404')
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page not found', 404))
+    // res.status(404).render('404')
+})
+
+app.use((err, req, res, next) => {
+    const {statusCode = 500, message = 'Something went wrong'} = err;
+    if(!err.message) err.message = 'Oh no, something went wrong!'
+    res.status(statusCode).render('error', {err})
 })
 
 app.listen(3000, () => {
