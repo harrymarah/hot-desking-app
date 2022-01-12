@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
 const catchAsync = require('../utils/catchAsync')
+const {validateOffice} = require('../middleware')
 
 const Office = require('../models/office')
 const Company = require('../models/company')
@@ -11,7 +12,7 @@ router.get('/newoffice', catchAsync(async (req, res) => {
     res.render('office/new', {company})
 }))
 
-router.post('/office', catchAsync(async (req, res) => {
+router.post('/office', validateOffice, catchAsync(async (req, res, next) => {
     const {id} = req.params
     const company = await Company.findById(id)
     const office = new Office(req.body.office)
@@ -36,7 +37,7 @@ router.get('/:officeid/edit', catchAsync(async (req, res) => {
     res.render('office/edit', {office, company})
 }))
 
-router.put('/:officeid', catchAsync(async (req, res) => {
+router.put('/:officeid', validateOffice, catchAsync(async (req, res, next) => {
     const {officeid, id} = req.params
     const office = await Office.findById(req.params.officeid)
     await Office.findByIdAndUpdate(officeid, {...req.body.office})

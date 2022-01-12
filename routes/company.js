@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const catchAsync = require('../utils/catchAsync')
+const {validateCompany} = require('../middleware')
 
 const Company = require('../models/company')
 
@@ -9,7 +10,7 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('company/index', {company})
 }))
 
-router.post('/', catchAsync(async (req, res) => {
+router.post('/', validateCompany, catchAsync(async (req, res, next) => {
     const company = new Company(req.body.company)
     await company.save()
     res.redirect(`company/${company._id}`)
@@ -30,7 +31,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 }))
 
 
-router.put('/:id', catchAsync(async (req, res) => {
+router.put('/:id', validateCompany, catchAsync(async (req, res, next) => {
     const {id} = req.params
     await Company.findByIdAndUpdate(id, {...req.body.company})
     res.redirect(`${id}`)
