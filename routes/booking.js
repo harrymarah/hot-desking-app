@@ -15,12 +15,11 @@ router.post('/', async (req, res) => {
     if(req.body.booking.bookedAM === 'on') booking.bookedAM = true
     if(req.body.booking.bookedPM === 'on') booking.bookedPM = true
 
-    deskBooked.bookings = booking;
+    deskBooked.bookings.push(booking);
 
     await booking.save()
     await office.save()
 
-    console.log(deskBooked)
     res.redirect(`/company/${company._id}/${office._id}`)
 })
 

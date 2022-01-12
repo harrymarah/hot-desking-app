@@ -11,47 +11,43 @@
                 
             <h2 class="mt-5">Make a booking:</h2>
 
-            <form action="/company/<%= company._id %>/<%= office._id %>/bookings" method="POST">
+            <form class="needs-validation" action="/company/<%= company._id %>/<%= office._id %>/bookings" method="POST" novalidate>
                 <div class="row mb-3">
-                    <select name='booking[deskIndex]' class="form-select form-select-lg col mx-3" aria-label=".form-select-lg example">
-                        <option selected>Select a desk</option>
+                  <div class="row mb-3">
+
+                    <div class="col">
+                      <select name='booking[deskIndex]' class="form-select form-select-lg" aria-label=".form-select-lg example" required>
+                        <option selected value=''>Select a desk</option>
                         <% for(let i = 0; i < office.desks.length; i++){ %>
                             <option value="<%= i %>">Desk <%= i + 1 %></option>                    
                         <% } %> 
-                    </select>
-        
-                    <input name='booking[bookingDate]' placeholder="Selected date" type="date" id="date-picker-example" class="form-control datepicker col mx-3">
+                      </select>
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please select a desk.</div>
+                    </div>
+
+                    <div class="col">
+                      <input name='booking[bookingDate]' placeholder="Selected date" type="date" id="date-picker-example" class="form-control datepicker h-100" required>
+
+                      <div class="valid-feedback">Looks good!</div>
+                      <div class="invalid-feedback">Please choose a date.</div>
+                    </div>                    
                     
+                  </div>                    
 
                     <div class="mt-3 d-flex justify-content-between">
                         <div class="">
-                            <input type="radio" class="btn-check" name="booking[bookedAM]" id="am-booking" autocomplete="off">
+                            <input type="checkbox" class="btn-check" name="booking[bookedAM]" id="am-booking" autocomplete="off">
                             <label class="btn btn-outline-primary btn-lg" for="am-booking">AM</label>
     
-                            <input type="radio" class="btn-check" name="booking[bookedPM]" id="pm-booking" autocomplete="off">
+                            <input type="checkbox" class="btn-check" name="booking[bookedPM]" id="pm-booking" autocomplete="off">
                             <label class="btn btn-outline-primary btn-lg" for="pm-booking">PM</label>
-    
-                            <!-- <input type="radio" class="btn-check" name="booking[allDayBooking]" id="all-day-booking" autocomplete="off">
-                            <label class="btn btn-outline-primary btn-lg" for="all-day-booking">All Day</label> -->
                         </div>
-
-                        <!-- <div class="btn-group btn-group-lg" role="group">
-                            <input type="radio" class="btn-check" name="btnradio" id="am-booking" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="am-booking">AM</label>
-                          
-                            <input type="radio" class="btn-check" name="btnradio" id="pm-booking" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="pm-booking">PM</label>
-                          
-                            <input type="radio" class="btn-check" name="btnradio" id="all-day-booking" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="all-day-booking">All Day</label>
-                        </div> -->
 
                         <input class="btn btn-success btn-lg" type="submit" value="Submit">
                     </div>
-                    
                 </div>
             </form>
-
         </div>  
 
         <div class="col-4 mt-5">
@@ -62,7 +58,42 @@
             <img class="img-fluid" src="<%= office.floorPlan %>" alt="" data-bs-toggle="modal" data-bs-target="#exampleModal">
         </div>
     </div>
+
+    <div class="col">
+        <h2>Bookings</h2>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Desk Number</th>
+                <th scope="col">Date</th>
+                <th scope="col">Booked AM</th>
+                <th scope="col">Booked PM</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+              <% for(let i = 0; i < office.desks.length; i++){ %> 
+                <% for(let j = 0; j < office.desks[i].bookings.length; j++){ %> 
+                  <tr>
+                    <th scope="row"><%= office.desks[i].deskNumber %> </th>
+                    <td><%= office.desks[i].bookings[j].bookingDate %> </td>
+                    <td><%= office.desks[i].bookings[j].bookedAM %> </td>
+                    <td><%= office.desks[i].bookings[j].bookedPM %> </td>
+                  </tr>
+                <% } %> 
+              <% } %> 
+            </tbody>
+          </table>
+        
+    </div>
+
+
+
+
+
 </div>
+
+
 
 
 

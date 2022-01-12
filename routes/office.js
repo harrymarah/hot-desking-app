@@ -24,7 +24,7 @@ router.post('/office', async (req, res) => {
 })
 
 router.get('/:officeid', async (req, res) => {
-    const office = await Office.findById(req.params.officeid)
+    const office = await Office.findById(req.params.officeid).populate({path: 'desks.bookings'})
     const company = await Company.findById(req.params.id)
     res.render('office/show', {office, company})
 })

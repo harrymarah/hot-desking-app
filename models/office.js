@@ -14,10 +14,12 @@ const OfficeSchema = new Schema({
     desks: [
         {
             deskNumber: Number,
-            bookings:{
-                type: Schema.Types.ObjectId,
-                ref: 'Booking'
-            }
+            bookings:[
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Booking'
+                }
+            ]
         }
     ]
 })
