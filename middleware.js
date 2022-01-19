@@ -13,7 +13,7 @@ module.exports.validateCompany = (req, res, next) => {
 }
 
 module.exports.validateOffice = (req, res, next) => {
-    const {error} = officeSchema.validate(req.body);
+    const {error} = officeSchema.validate(req.body, {allowUnknown: true});
     if(error){
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400)

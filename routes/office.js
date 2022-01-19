@@ -22,18 +22,27 @@ router.post('/office', validateOffice, catchAsync(async (req, res, next) => {
     }
     await company.save()
     await office.save()
+    req.flash('success', 'Congratulations! You have successfully added your office!')
     res.redirect(`/company/${company._id}`)
 }))
 
 router.get('/:officeid', catchAsync(async (req, res) => {
     const office = await Office.findById(req.params.officeid).populate({path: 'desks.bookings'})
     const company = await Company.findById(req.params.id)
+    if(!office){
+        req.flash('error', 'Office not found')
+        return res.redirect('/company')
+    } 
     res.render('office/show', {office, company})
 }))
 
 router.get('/:officeid/edit', catchAsync(async (req, res) => {
     const office = await Office.findById(req.params.officeid)
     const company = await Company.findById(req.params.id)
+    if(!office){
+        req.flash('error', 'Office not found')
+        return res.redirect('/company')
+    } 
     res.render('office/edit', {office, company})
 }))
 
@@ -41,6 +50,7 @@ router.put('/:officeid', validateOffice, catchAsync(async (req, res, next) => {
     const {officeid, id} = req.params
     const office = await Office.findById(req.params.officeid)
     await Office.findByIdAndUpdate(officeid, {...req.body.office})
+    req.flash('success', 'Congratulations! You have successfully updated your office!')
     res.redirect(`${officeid}`)
 }))
 

@@ -25,7 +25,8 @@ module.exports.officeSchema = Joi.object({
             postcode: Joi.string().required()
         }).required(),
         floorPlan: Joi.string(),
-        desks: Joi.array()
+        desks: Joi.array(),
+        noOfDesks: Joi.any()
     }).required()
 })
 

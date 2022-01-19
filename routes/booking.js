@@ -25,6 +25,8 @@ router.post('/', validateBooking, catchAsync(async (req, res, next) => {
     await booking.save()
     await office.save()
 
+    req.flash('success', 'Congratulations! You have successfully booked a desk!')
+
     res.redirect(`/company/${company._id}/${office._id}`)
 }))
 

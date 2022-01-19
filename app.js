@@ -5,6 +5,8 @@ const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const ExpressError = require('./utils/ExpressError')
+const session = require('express-session')
+const flash = require('connect-flash')
 
 const User = require('./models/user')
 
@@ -32,14 +34,33 @@ app.use(methodOverride('_method'))
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const sessionConfig = {
+    secret: 'thisisasecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 604800000, //miliseconds in a week
+        maxAge: 604800000,
+    }
+}
+app.use(session(sessionConfig))
+app.use(flash())
 
-app.get('/', (req, res) => {
-    res.render('home')
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
 })
 
 app.use('/company', companies)
 app.use('/company/:id', offices)
 app.use('/company/:id/:officeid/bookings', bookings)
+
+
+app.get('/', (req, res) => {
+    res.render('home')
+})
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404))
