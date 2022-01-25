@@ -7,12 +7,14 @@ const methodOverride = require('method-override')
 const ExpressError = require('./utils/ExpressError')
 const session = require('express-session')
 const flash = require('connect-flash')
-
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 
 const companies = require('./routes/company')
 const offices = require('./routes/office')
 const bookings = require('./routes/booking')
+const users = require('./routes/user')
 
 mongoose.connect('mongodb://localhost:27017/hot-desk', {
     useNewUrlParser: true,
@@ -47,6 +49,13 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash())
 
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
@@ -56,6 +65,7 @@ app.use((req, res, next) => {
 app.use('/company', companies)
 app.use('/company/:id', offices)
 app.use('/company/:id/:officeid/bookings', bookings)
+app.use('/', users)
 
 
 app.get('/', (req, res) => {
