@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
 const catchAsync = require('../utils/catchAsync')
-const {validateOffice} = require('../middleware')
+const {validateOffice, isLoggedIn} = require('../middleware')
 
 const Office = require('../models/office')
 const Company = require('../models/company')
 
 
-router.get('/newoffice', catchAsync(async (req, res) => {
+router.get('/newoffice', isLoggedIn, catchAsync(async (req, res) => {
     const company = await Company.findById(req.params.id)
     res.render('office/new', {company})
 }))
@@ -26,7 +26,7 @@ router.post('/office', validateOffice, catchAsync(async (req, res, next) => {
     res.redirect(`/company/${company._id}`)
 }))
 
-router.get('/:officeid', catchAsync(async (req, res) => {
+router.get('/:officeid', isLoggedIn, catchAsync(async (req, res) => {
     const office = await Office.findById(req.params.officeid).populate({path: 'desks.bookings'})
     const company = await Company.findById(req.params.id)
     if(!office){
@@ -36,7 +36,7 @@ router.get('/:officeid', catchAsync(async (req, res) => {
     res.render('office/show', {office, company})
 }))
 
-router.get('/:officeid/edit', catchAsync(async (req, res) => {
+router.get('/:officeid/edit', isLoggedIn, catchAsync(async (req, res) => {
     const office = await Office.findById(req.params.officeid)
     const company = await Company.findById(req.params.id)
     if(!office){
@@ -46,7 +46,7 @@ router.get('/:officeid/edit', catchAsync(async (req, res) => {
     res.render('office/edit', {office, company})
 }))
 
-router.put('/:officeid', validateOffice, catchAsync(async (req, res, next) => {
+router.put('/:officeid', isLoggedIn, validateOffice, catchAsync(async (req, res, next) => {
     const {officeid, id} = req.params
     const office = await Office.findById(req.params.officeid)
     await Office.findByIdAndUpdate(officeid, {...req.body.office})

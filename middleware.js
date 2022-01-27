@@ -1,5 +1,6 @@
 const {companySchema, officeSchema, bookingSchema} = require('./schemas')
 const ExpressError = require('./utils/ExpressError')
+const bcrypt = require('bcrypt')
 
 
 module.exports.validateCompany = (req, res, next) => {
@@ -32,3 +33,15 @@ module.exports.validateBooking = (req, res, next) => {
     }
 }
 
+module.exports.hashPasscode = async (passcode) => {
+    const hash = await bcrypt.hash(passcode, 12)
+    return hash
+}
+
+module.exports.isLoggedIn = (req, res, next) => {
+    if(!req.isAuthenticated()){
+        req.flash('error', 'You must be logged in to do that!')
+        return res.redirect('/login')
+    }
+    next()
+}

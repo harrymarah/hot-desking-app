@@ -1,1 +1,22 @@
-<h1>REGISTER EMPLOYEE INIT</h1>
+<%- layout('layouts/boilerplate') %> 
+
+<h2>Register as an employee</h2>
+
+<form action="/register-employee" class="needs-validation" method="POST" novalidate>
+    <label class="form-label mt-3" for="email">Email Address</label>
+    <input class="form-control" type="email" name="email" id="email" required>
+
+    <label class="form-label mt-3" for="username">Username</label>
+    <input class="form-control" type="text" name="username" id="username" required>
+
+    <label class="form-label mt-3" for="password">Password</label>
+    <input class="form-control" type="password" name="password" id="password" required>
+
+    <label class="form-label mt-3" for="companyCode">Unique Company Code</label>
+    <input class="form-control" type="text" name="companyCode" id="companyCode" required>
+
+    <label class="form-label mt-3" for="companyPasscode">Company Passcode</label>
+    <input class="form-control" type="password" name="companyPasscode" id="companyPasscode" required>
+
+    <input type="submit" value="Submit" class="btn btn-success my-2">
+</form>
