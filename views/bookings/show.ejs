@@ -1,0 +1,44 @@
+<%- layout('layouts/boilerplate') %> 
+
+<h1>Bookings page</h1>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Office</th>
+        <th scope="col">Desk No.</th>
+        <th scope="col">Date</th>
+        <th scope="col">Booked AM</th>
+        <th scope="col">Booked PM</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% for(let i = 0; i < user.bookings.length; i++){ %> 
+            <% console.log(user.bookings[i].office) %> 
+            <tr>
+                <td><a href="/company/<%= company._id %>/<%= user.bookings[i].office._id %>"><%= user.bookings[i].office.officeNickname%></a></td>
+                <td>2</td>
+                <td><%= user.bookings[i].bookingDate %></td>
+                <% if(user.bookings[i].bookedAMBy && user.bookings[i].bookedAMBy.toString() === user._id.toString()){ %> 
+                    <td><i class="fas fa-check"></i></td>
+                <% } else { %> 
+                    <td></td>
+                <% } %> 
+
+                <% if(user.bookings[i].bookedPMBy && user.bookings[i].bookedPMBy.toString() === user._id.toString()){ %> 
+                    <td><i class="fas fa-check"></i></td>
+                <% } else { %> 
+                    <td></td>
+                <% } %>
+                <td>6</td>
+            </tr>
+            
+        <% } %> 
+    </tbody>
+  </table>  
+
+
+
+
+  <p><%= company %> </p>

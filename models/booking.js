@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const office = require('./office');
 const Schema = mongoose.Schema
 
 const BookingSchema = new Schema({
@@ -12,6 +13,10 @@ const BookingSchema = new Schema({
     bookedPMBy: {
         type: Schema.Types.ObjectId,
         ref: "User"
+    },
+    office: {
+        type: Schema.Types.ObjectId,
+        ref: 'Office'
     }
 })
 

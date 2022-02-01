@@ -39,9 +39,18 @@ module.exports.hashPasscode = async (passcode) => {
 }
 
 module.exports.isLoggedIn = (req, res, next) => {
+    req.session.returnTo = req.originalUrl
     if(!req.isAuthenticated()){
         req.flash('error', 'You must be logged in to do that!')
         return res.redirect('/login')
+    }
+    next()
+}
+
+module.exports.isAdmin = (req, res, next) => {
+    if(!req.user.isAdmin){
+        req.flash('error', 'You do not have permission to do that!')
+        return res.redirect('/company')
     }
     next()
 }
