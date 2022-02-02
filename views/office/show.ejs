@@ -16,10 +16,10 @@
                   <div class="row mb-3">
 
                     <div class="col">
-                      <select name='booking[deskIndex]' class="form-select form-select-lg" aria-label=".form-select-lg example" required>
+                      <select id="deskSelector" name='booking[deskIndex]' class="form-select form-select-lg" aria-label=".form-select-lg example" required>
                         <option selected value=''>Select a desk</option>
                         <% for(let i = 0; i < office.desks.length; i++){ %>
-                            <option value="<%= i %>">Desk <%= i + 1 %></option>                    
+                            <option class='selectedDesk' value="<%= i %>">Desk <%= i + 1 %></option>                    
                         <% } %> 
                       </select>
                       <div class="valid-feedback">Looks good!</div>
@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="col">
-                      <input name='booking[bookingDate]' placeholder="Selected date" type="date" id="date-picker-example" class="form-control datepicker h-100" required>
+                      <input name='booking[bookingDate]' placeholder="Selected date" type="date" id="date-picker" class="form-control datepicker h-100" required>
 
                       <div class="valid-feedback">Looks good!</div>
                       <div class="invalid-feedback">Please choose a date.</div>
@@ -109,3 +109,22 @@
       </div>
     </div>
   </div>
+
+
+
+
+  <script>
+    const deskSelector = document.querySelector('#deskSelector')
+    const amBtn = document.querySelector('#am-booking')
+    const pmBtn = document.querySelector('#pm-booking')
+    const datePicker = document.querySelector('#date-picker')
+    const office = <%- JSON.stringify(office) %>;
+
+    const doubleBookingCheck = (e) => {
+      console.log(office.desks[e.target.value].bookings)
+      console.log(datePicker.value)
+    }
+
+    deskSelector.addEventListener('change', doubleBookingCheck)
+
+  </script>

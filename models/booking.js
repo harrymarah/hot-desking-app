@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 
 const BookingSchema = new Schema({
     bookingDate: Date,
+    deskNumber: Number,
     bookedAM: Boolean,
     bookedPM: Boolean,
     bookedAMBy: {

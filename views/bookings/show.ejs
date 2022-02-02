@@ -15,11 +15,13 @@
     </thead>
     <tbody>
         <% for(let i = 0; i < user.bookings.length; i++){ %> 
-            <% console.log(user.bookings[i].office) %> 
             <tr>
-                <td><a href="/company/<%= company._id %>/<%= user.bookings[i].office._id %>"><%= user.bookings[i].office.officeNickname%></a></td>
-                <td>2</td>
+                <td><a href="/company/<%= company[0]._id %>/<%= user.bookings[i].office._id %>"><%= user.bookings[i].office.officeNickname%></a></td>
+
+                <td><%= user.bookings[i].deskNumber %> </td>
+
                 <td><%= user.bookings[i].bookingDate %></td>
+
                 <% if(user.bookings[i].bookedAMBy && user.bookings[i].bookedAMBy.toString() === user._id.toString()){ %> 
                     <td><i class="fas fa-check"></i></td>
                 <% } else { %> 
@@ -31,14 +33,9 @@
                 <% } else { %> 
                     <td></td>
                 <% } %>
-                <td>6</td>
+
+                <td><form action="/company/<%= company[0]._id %>/<%= user.bookings[i].office._id %>/bookings/<%= user.bookings[i]._id %>?_method=DELETE" method="POST"><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></form></td>
             </tr>
-            
         <% } %> 
     </tbody>
   </table>  
-
-
-
-
-  <p><%= company %> </p>

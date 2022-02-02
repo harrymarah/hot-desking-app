@@ -89,7 +89,6 @@ router.get('/mybookings', isLoggedIn, catchAsync(async(req, res) => {
         populate: {path: 'office'}
     })
     const company = await Company.find({employees: user})
-    console.log(company._id)
     res.render('bookings/show', {user, company})
 }))
 

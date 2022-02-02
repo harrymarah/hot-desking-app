@@ -30,6 +30,8 @@ router.post('/', isLoggedIn, validateBooking, catchAsync(async (req, res, next) 
         booking.bookedPMBy = user
     }
 
+    booking.deskNumber = parseInt(deskIndex) + 1
+
     deskBooked.bookings.push(booking);
     user.bookings.push(booking)
     booking.office = office
