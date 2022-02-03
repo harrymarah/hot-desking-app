@@ -3,7 +3,6 @@ const router = express.Router({mergeParams: true})
 const catchAsync = require('../utils/catchAsync')
 const {validateBooking, isLoggedIn} = require('../middleware')
 
-
 const Booking = require('../models/booking')
 const Office = require('../models/office')
 const Company = require('../models/company')

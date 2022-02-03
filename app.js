@@ -9,7 +9,9 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const CronJob = require('cron').CronJob
 const User = require('./models/user')
+const Booking = require('./models/booking')
 
 const companies = require('./routes/company')
 const offices = require('./routes/office')
@@ -55,6 +57,14 @@ passport.use(new LocalStrategy(User.authenticate()))
 
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
+
+const deleteExpiredBookings = new CronJob('00 00 00 * * *', async () => {
+    const deleteDate = new Date(Date.now())
+    deleteDate.setDate(deleteDate.getDate() - 3)
+    await Booking.deleteMany({bookingDate: {$lt: deleteDate}})
+})
+
+deleteExpiredBookings.start()
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user

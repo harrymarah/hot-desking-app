@@ -3,6 +3,7 @@ const router = express.Router()
 const catchAsync = require('../utils/catchAsync')
 const User = require('../models/user')
 const Company = require('../models/company')
+const Booking = require('../models/booking')
 const { models } = require('mongoose')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
@@ -91,6 +92,5 @@ router.get('/mybookings', isLoggedIn, catchAsync(async(req, res) => {
     const company = await Company.find({employees: user})
     res.render('bookings/show', {user, company})
 }))
-
 
 module.exports = router
