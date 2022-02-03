@@ -20,7 +20,7 @@
 
                 <td><%= user.bookings[i].deskNumber %> </td>
 
-                <td><%= user.bookings[i].bookingDate %></td>
+                <td><%= user.bookings[i].bookingDate.toString().slice(0, 15) %></td>
 
                 <% if(user.bookings[i].bookedAMBy && user.bookings[i].bookedAMBy.toString() === user._id.toString()){ %> 
                     <td><i class="fas fa-check"></i></td>

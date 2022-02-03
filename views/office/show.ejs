@@ -77,9 +77,21 @@
                 <% for(let j = 0; j < office.desks[i].bookings.length; j++){ %> 
                   <tr>
                     <th scope="row"><%= office.desks[i].deskNumber %> </th>
-                    <td><%= office.desks[i].bookings[j].bookingDate %> </td>
-                    <td><%= office.desks[i].bookings[j].bookedAM %> </td>
-                    <td><%= office.desks[i].bookings[j].bookedPM %> </td>
+
+                    <td><%= office.desks[i].bookings[j].bookingDate.toString().slice(0, 15) %> </td>
+
+                    <% if(office.desks[i].bookings[j].bookedAM){ %> 
+                        <td><i class="fas fa-check"></i></td>
+                    <% } else { %> 
+                        <td></td>
+                    <% } %> 
+
+                    <% if(office.desks[i].bookings[j].bookedPM){ %> 
+                        <td><i class="fas fa-check"></i></td>
+                    <% } else { %> 
+                        <td></td>
+                    <% } %> 
+
                     <td><form action="/company/<%= company._id %>/<%= office._id %>/bookings/<%= office.desks[i].bookings[j]._id %>?_method=DELETE" method="POST"><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></form></td>
                   </tr>
                 <% } %> 
