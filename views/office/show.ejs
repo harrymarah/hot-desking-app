@@ -38,10 +38,10 @@
                     <div class="mt-3 d-flex justify-content-between">
                         <div class="">
                             <input type="checkbox" class="btn-check" name="booking[bookedAM]" id="am-booking" autocomplete="off">
-                            <label class="btn btn-outline-primary btn-lg" for="am-booking">AM</label>
+                            <label id="am-label" class="btn btn-outline-primary btn-lg" for="am-booking">AM</label>
     
                             <input type="checkbox" class="btn-check" name="booking[bookedPM]" id="pm-booking" autocomplete="off">
-                            <label class="btn btn-outline-primary btn-lg" for="pm-booking">PM</label>
+                            <label id="pm-label" class="btn btn-outline-primary btn-lg" for="pm-booking">PM</label>
                         </div>
 
                         <input class="btn btn-success btn-lg" type="submit" value="Submit">
@@ -117,14 +117,33 @@
     const deskSelector = document.querySelector('#deskSelector')
     const amBtn = document.querySelector('#am-booking')
     const pmBtn = document.querySelector('#pm-booking')
+    const amLabel = document.querySelector('#am-label')
+    const pmLabel = document.querySelector('#pm-label')
     const datePicker = document.querySelector('#date-picker')
     const office = <%- JSON.stringify(office) %>;
 
-    const doubleBookingCheck = (e) => {
-      console.log(office.desks[e.target.value].bookings)
-      console.log(datePicker.value)
+    const doubleBookingCheck = () => {
+      const deskNo = deskSelector.value
+      if(!deskNo) return
+      const bookings = office.desks[deskNo].bookings
+      const date = new Date(datePicker.value)
+      amBtn.disabled = false
+      pmBtn.disabled = false
+      amLabel.classList.replace('btn-secondary', 'btn-outline-primary')
+      pmLabel.classList.replace('btn-secondary', 'btn-outline-primary')
+      for(let booking of bookings){
+        let bookingDate = new Date(booking.bookingDate)
+        if(bookingDate.toString() === date.toString() && booking.bookedAM){
+          amLabel.classList.replace('btn-outline-primary', 'btn-secondary')
+          amBtn.disabled = true
+        } 
+        if(bookingDate.toString() === date.toString() && booking.bookedPM){
+          pmBtn.disabled = true
+          pmLabel.classList.replace('btn-outline-primary', 'btn-secondary')
+        }
+      }
     }
 
     deskSelector.addEventListener('change', doubleBookingCheck)
-
+    datePicker.addEventListener('change', doubleBookingCheck)
   </script>
