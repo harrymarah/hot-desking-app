@@ -35,8 +35,6 @@ router.post('/', isLoggedIn, validateBooking, catchAsync(async (req, res, next) 
     user.bookings.push(booking)
     booking.office = office
 
-    Booking.find({}).sort({"bookingDate": 1})
-
     await booking.save()
     await office.save()
     await user.save()

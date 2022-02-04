@@ -19,7 +19,7 @@
         </div>
         <div class="my-3">
             <label class="form-label" for="businessCode">Unique Business Code:</label>
-            <input class="form-control"  type="text" id="businessCode" name="" value="<%= company.uniqueCompanyCode%>" required disabled readonly>
+            <input class="form-control"  type="text" id="businessCode" name="company[uniqueCompanyCode]" value="<%= company.uniqueCompanyCode%>" required disabled readonly>
 
             <div class="invalid-feedback">Unique company code is required.</div>
         </div>

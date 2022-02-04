@@ -1,0 +1,97 @@
+<%- layout('layouts/boilerplate') %> 
+
+<h1>Admin Panel</h1>
+
+<h2>Company Users</h2>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Admin  </th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        <% for(user of users){ %> 
+            <tr>
+                <th scope="row"><%= user.username %></th>
+                <td><%= user.email %></td>
+                <td>
+                    <div class="input-group">
+                        <select class="form-select form-select-sm" aria-label="Default select example">
+                            <option <%= user.isAdmin ? 'selected' : '' %> value="true">Yes</option>
+                            <option <%= user.isAdmin ? '' : 'selected' %> value="false">No</option>
+                        </select>
+                        <button class="btn btn-outline-secondary btn-sm" type="button"><i class="fas fa-check"></i></button>
+                    </div>
+                    
+                </td>
+                <td><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
+            </tr>
+        <% } %> 
+    </tbody>
+  </table>
+
+
+<h2>Bookings</h2>
+
+
+
+
+<% for(let office of company[0].offices){  %> 
+    <h4><em class="text-muted"><%= office.officeNickname %></em></h4>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Desk No.</th>
+            <th scope="col">Employee</th>
+            <th scope="col">Date</th>
+            <th scope="col">Booked AM</th>
+            <th scope="col">Booked PM</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+
+            <% for(let i = 0; i < office.desks.length; i++){ %> 
+                <% for(let j = 0; j < office.desks[i].bookings.length; j++){ %> 
+                  <tr>
+                    <td scope="row"><%= office.desks[i].deskNumber %></th>
+
+                    <% if(office.desks[i].bookings[j].bookedAMBy){ %> 
+                        <td><%= office.desks[i].bookings[j].bookedAMBy.username%></td>
+
+                    <% } else if(office.desks[i].bookings[j].bookedPMBy) { %> 
+                        <td><%= office.desks[i].bookings[j].bookedPMBy.username%></td>
+
+                    <% } else { %> 
+                        <td></td>
+                    <% } %> 
+
+                    <td><%= office.desks[i].bookings[j].bookingDate.toString().slice(0, 15) %> </td>
+
+                    <% if(office.desks[i].bookings[j].bookedAM){ %> 
+                        <td><i class="fas fa-check"></i></td>
+                    <% } else { %> 
+                        <td></td>
+                    <% } %> 
+
+                    <% if(office.desks[i].bookings[j].bookedPM){ %> 
+                        <td><i class="fas fa-check"></i></td>
+                    <% } else { %> 
+                        <td></td>
+                    <% } %> 
+
+                    <td><form action="/company/<%= company._id %>/<%= office._id %>/bookings/<%= office.desks[i].bookings[j]._id %>?_method=DELETE" method="POST"><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></form></td>
+                  </tr>
+                <% } %> 
+              <% } %> 
+           
+        </tbody>
+      </table>  
+
+      
+<% } %> 

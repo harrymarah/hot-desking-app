@@ -25,9 +25,7 @@ mongoose.connect('mongodb://localhost:27017/hot-desk', {
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, 'Database Connection Error'));
-db.once("open", () => {
-    console.log("Database Connection Established Sucessfully")
-})
+db.once("open", () => console.log("Database Connection Established Sucessfully"))
 
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
@@ -85,13 +83,15 @@ app.get('/', (req, res) => {
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404))
-    // res.status(404).render('404')
+    res.status(404).render('404')
 })
 
 app.use((err, req, res, next) => {
     const {statusCode = 500, message = 'Something went wrong'} = err;
     if(!err.message) err.message = 'Oh no, something went wrong!'
-    res.status(statusCode).render('error', {err})
+    res.status(statusCode)
+    if(statusCode === 404) return res.render('404')
+    res.render('error', {err})
 })
 
 app.listen(3000, () => {

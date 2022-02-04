@@ -4,10 +4,11 @@ const catchAsync = require('../utils/catchAsync')
 const User = require('../models/user')
 const Company = require('../models/company')
 const Booking = require('../models/booking')
+const Office = require('../models/office')
 const { models } = require('mongoose')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
-const {isLoggedIn} = require('../middleware')
+const {isLoggedIn, isAdmin} = require('../middleware')
 
 router.get('/register-admin', (req, res) => {
     res.render('users/register-admin')
@@ -30,9 +31,6 @@ router.post('/register-admin', catchAsync(async (req, res, next) => {
     }
 }))
 
-//employees that register are added to company.employee array, add logic to create a company route to add admin user to company.employee array
-
-
 router.get('/register-employee', (req, res) => {
     res.render('users/register-employee')
 })
@@ -51,7 +49,9 @@ router.post('/register-employee', catchAsync(async (req, res) => {
             user.isAdmin = false
             const registeredUser = await User.register(user, password)
             company.employees.push(registeredUser)
+            user.company = company
             await company.save()
+            await user.save()
             req.login(registeredUser, err => {
                 if(err) return next(err)
                 req.flash('success', 'Welcome to hotDesk!')
@@ -72,7 +72,7 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) => {
-    req.flash('success', `Welcome back!`)
+    req.flash('success', `Welcome back ${req.user.username}!`)
     const redirectUrl = req.session.returnTo || '/company'
     delete req.session.returnTo
     res.redirect(redirectUrl)
@@ -91,6 +91,15 @@ router.get('/mybookings', isLoggedIn, catchAsync(async(req, res) => {
     })
     const company = await Company.find({employees: user})
     res.render('bookings/show', {user, company})
+}))
+
+router.get('/admin-panel', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    const users = await User.find({company: req.user.company})
+    const company = await Company.find({employees: req.user._id})
+    .populate({path: 'offices', 
+    populate: {path: 'desks.bookings',
+    populate: {path: 'bookedAMBy bookedPMBy'}}})
+    res.render('users/admin-panel', {users, company})
 }))
 
 module.exports = router

@@ -16,7 +16,7 @@
     <tbody>
         <% for(let i = 0; i < user.bookings.length; i++){ %> 
             <tr>
-                <td><a href="/company/<%= company[0]._id %>/<%= user.bookings[i].office._id %>"><%= user.bookings[i].office.officeNickname%></a></td>
+                <td scope="row"><a href="/company/<%= company[0]._id %>/<%= user.bookings[i].office._id %>"><%= user.bookings[i].office.officeNickname%></a></td>
 
                 <td><%= user.bookings[i].deskNumber %> </td>
 

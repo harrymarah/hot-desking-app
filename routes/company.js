@@ -15,9 +15,12 @@ router.get('/', isLoggedIn, catchAsync(async (req, res) => {
 router.post('/', isLoggedIn, isAdmin, validateCompany, catchAsync(async (req, res, next) => {
     const company = new Company(req.body.company)
     const user = req.user._id
+    const adminUser = await User.findById(user)
     company.companyPasscode = await hashPasscode(req.body.company.companyPasscode)
     company.employees.push(user)
+    adminUser.company = company
     await company.save()
+    await adminUser.save()
     req.flash('success', 'Congratulations! You have successfully registered your company!')
     res.redirect(`company/${company._id}`)
 }))
