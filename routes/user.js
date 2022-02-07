@@ -102,4 +102,37 @@ router.get('/admin-panel', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     res.render('users/admin-panel', {users, company})
 }))
 
+router.put('/admin/:userid', async(req, res) => {
+    const {userid} = req.params
+    const user = await User.findById(userid)
+    const {adminStatus} = req.body
+    if(userid.toString() === req.user._id.toString()){
+        req.flash('error', 'You cannot makes changes to your own account.')
+        return res.redirect('/admin-panel')
+    }
+    if(adminStatus){
+        user.isAdmin = true
+        await user.save()
+        return res.redirect('/admin-panel')
+    }  
+    if(!adminStatus){
+        user.isAdmin = false
+        await user.save()
+        return res.redirect('/admin-panel')
+    }
+})
+
+router.delete('/admin/:userid', async(req, res) => {
+    const {userid} = req.params
+    const user = await User.findById(userid)
+    if(userid.toString() === req.user._id.toString()){
+        req.flash('error', 'You cannot makes changes to your own account.')
+        return res.redirect('/admin-panel')
+    }
+    const bookings = await Booking.deleteMany({$or: [{bookedAMBy: user}, {bookedPMBy: user}]})
+    await user.deleteOne()
+    req.flash('warning', 'User and associated bookings sucessfully deleted.')
+    res.redirect('/admin-panel')
+})
+
 module.exports = router

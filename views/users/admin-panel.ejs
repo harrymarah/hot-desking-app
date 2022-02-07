@@ -20,16 +20,21 @@
                 <th scope="row"><%= user.username %></th>
                 <td><%= user.email %></td>
                 <td>
+                  <form action="/admin/<%= user._id %>?_method=PUT" method="POST">
                     <div class="input-group">
-                        <select class="form-select form-select-sm" aria-label="Default select example">
+                        <select name='adminStatus' class="form-select form-select-sm" aria-label="Default select example">
                             <option <%= user.isAdmin ? 'selected' : '' %> value="true">Yes</option>
                             <option <%= user.isAdmin ? '' : 'selected' %> value="false">No</option>
                         </select>
-                        <button class="btn btn-outline-secondary btn-sm" type="button"><i class="fas fa-check"></i></button>
+                          <button class="btn btn-outline-secondary btn-sm" type="submit"><i class="fas fa-check"></i></button>                        
                     </div>
-                    
+                  </form>
                 </td>
-                <td><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
+                <td>
+                  <form action="/admin/<%= user._id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                  </form>
+                </td>
             </tr>
         <% } %> 
     </tbody>
@@ -85,7 +90,7 @@
                         <td></td>
                     <% } %> 
 
-                    <td><form action="/company/<%= company._id %>/<%= office._id %>/bookings/<%= office.desks[i].bookings[j]._id %>?_method=DELETE" method="POST"><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></form></td>
+                    <td><form action="/company/<%= company[0]._id %>/<%= office._id %>/bookings/<%= office.desks[i].bookings[j]._id %>?_method=DELETE" method="POST"><button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></form></td>
                   </tr>
                 <% } %> 
               <% } %> 
