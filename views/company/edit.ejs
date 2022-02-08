@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <h1 class="p-2 display-3">Edit your company</h1>
 
-    <form class="p-2 needs-validation" action="/company/<%= company._id %>?_method=PUT" method="POST" novalidate>
+    <form class="p-2 needs-validation" action="/company/<%= company._id %>?_method=PUT" method="POST" novalidate enctype="multipart/form-data">
         <div class="my-3">
             <label class="form-label" for="name">Company Name:</label>
             <input class="form-control"  type="text" id="name" name="company[companyName]" value="<%= company.companyName %>" required>
@@ -11,12 +11,22 @@
             <div class="invalid-feedback">Company name is required.</div>
 
         </div>
-        <div class="my-3">
+
+        <!-- <div class="my-3">
             <label class="form-label" for="name">Company Logo Link:</label>
             <input class="form-control"  type="text" id="name" name="company[companyLogo]" value="<%= company.companyLogo %>" required>
 
             <div class="invalid-feedback">Company logo image is required.</div>
+        </div> -->
+
+        <div class="my-3">
+            <label for="company-logo" class="form-label">Replace Company Logo:</label>
+            <input class="form-control" type="file" id="company-logo" name="company[companyLogo]">
+
+            <div class="invalid-feedback">Company logo image is required.</div>
+
         </div>
+
         <div class="my-3">
             <label class="form-label" for="businessCode">Unique Business Code:</label>
             <input class="form-control"  type="text" id="businessCode" name="company[uniqueCompanyCode]" value="<%= company.uniqueCompanyCode%>" required disabled readonly>

@@ -3,7 +3,10 @@ const Joi = require('joi');
 module.exports.companySchema = Joi.object({
     company: Joi.object({
         companyName: Joi.string().required(),
-        companyLogo: Joi.string().required(),
+        companyLogo: Joi.object({
+            url: Joi.string(),
+            filename: Joi.string()
+        }),
         uniqueCompanyCode: Joi.string().required().min(6).max(6)
             .messages({
                 'string.min': 'Unique company code must be exactly 6 characters long', 
@@ -24,7 +27,10 @@ module.exports.officeSchema = Joi.object({
             county: Joi.string(),
             postcode: Joi.string().required()
         }).required(),
-        floorPlan: Joi.string(),
+        floorPlan: Joi.object({
+            url: Joi.string(),
+            filename: Joi.string()
+        }),
         desks: Joi.array(),
         noOfDesks: Joi.any()
     }).required()

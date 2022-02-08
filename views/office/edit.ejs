@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <h1 class="p-2 display-3">Edit your office</h1>
 
-    <form class="p-2 needs-validation" action="/company/<%= company._id %>/<%= office._id %>?_method=PUT" method="POST" novalidate>
+    <form class="p-2 needs-validation" action="/company/<%= company._id %>/<%= office._id %>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate>
         <div class="my-3">
             <label class="form-label" for="name">Office Nickname:</label>
             <input class="form-control"  type="text" id="name" name="office[officeNickname]" value="<%= office.officeNickname %>" required>
@@ -39,11 +39,19 @@
             <div class="invalid-feedback">Office postcode is required.</div>
         </div>
 
-        <div class="my-3">
+        <!-- <div class="my-3">
             <label class="form-label" for="floorplan">Floor plan:</label>
-            <input class="form-control" type="text" id="floorplan" name="office[floorPlan]" value="<%= office.floorPlan %>">
+            <input class="form-control" type="text" id="floorplan" name="office[floorPlan]" value="">
 
             <div class="invalid-feedback">Office floor plan is required.</div>
+        </div> -->
+
+        <div class="my-3">
+            <label for="floorplan" class="form-label">Floor Plan:</label>
+            <input class="form-control" type="file" id="floorplan" name="office[floorPlan]">
+    
+           <div class="invalid-feedback">Please upload a floor plan.</div>
+    
         </div>
 
         <div class="my-3">

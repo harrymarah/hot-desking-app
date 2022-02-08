@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <h1 class="p-2 display-3">Add your company</h1>
 
-    <form class="p-2 needs-validation" action="/company" method="POST" novalidate>
+    <form class="p-2 needs-validation" action="/company" method="POST" novalidate enctype="multipart/form-data">
         <div class="my-3">
 
             <label class="form-label" for="name">Company Name:</label>
@@ -13,9 +13,17 @@
             <div class="invalid-feedback">Please add your company name.</div>
 
         </div>
-        <div class="my-3">
+        <!-- <div class="my-3">
             <label class="form-label" for="name">Company Logo Link:</label>
             <input class="form-control" type="text" id="name" name="company[companyLogo]" required>
+
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please upload an image of your company logo.</div>
+
+        </div> -->
+        <div class="my-3">
+            <label for="company-logo" class="form-label">Company Logo:</label>
+            <input class="form-control" type="file" id="company-logo" name="company[companyLogo]" required>
 
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please upload an image of your company logo.</div>

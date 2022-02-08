@@ -55,7 +55,7 @@
                 <h5 class="mb-0">Floorplan</h5>
                 <p class="text-muted"><small><em>Click to enlarge</em></small></p>
             </div>
-            <img class="img-fluid" src="<%= office.floorPlan %>" alt="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <img class="img-fluid" src="<%= office.floorPlan.url %>" alt="" data-bs-toggle="modal" data-bs-target="#exampleModal">
         </div>
     </div>
 
@@ -113,7 +113,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <img class="img-fluid mx-auto d-block" src="<%= office.floorPlan %>" alt="">
+            <img class="img-fluid mx-auto d-block" src="<%= office.floorPlan.url %>" alt="">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

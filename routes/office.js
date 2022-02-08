@@ -6,13 +6,16 @@ const {validateOffice, isLoggedIn} = require('../middleware')
 const Office = require('../models/office')
 const Company = require('../models/company')
 
+const multer = require('multer')
+const {storage, cloudinary} = require('../cloudinary')
+const upload = multer({storage})
 
 router.get('/newoffice', isLoggedIn, catchAsync(async (req, res) => {
     const company = await Company.findById(req.params.id)
     res.render('office/new', {company})
 }))
 
-router.post('/office', validateOffice, catchAsync(async (req, res, next) => {
+router.post('/office', upload.single('office[floorPlan]'), validateOffice, catchAsync(async (req, res, next) => {
     const {id} = req.params
     const company = await Company.findById(id)
     const office = new Office(req.body.office)
@@ -20,6 +23,8 @@ router.post('/office', validateOffice, catchAsync(async (req, res, next) => {
     for(let i = 0; i < req.body.noOfDesks; i++){
         await office.desks.push({deskNumber: i + 1})
     }
+    office.floorPlan.url = req.file.path
+    office.floorPlan.filename = req.file.filename
     await company.save()
     await office.save()
     req.flash('success', 'Congratulations! You have successfully added your office!')
@@ -46,12 +51,16 @@ router.get('/:officeid/edit', isLoggedIn, catchAsync(async (req, res) => {
     res.render('office/edit', {office, company})
 }))
 
-router.put('/:officeid', isLoggedIn, validateOffice, catchAsync(async (req, res, next) => {
-    const {officeid, id} = req.params
-    const office = await Office.findById(req.params.officeid)
-    await Office.findByIdAndUpdate(officeid, {...req.body.office})
+router.put('/:officeid', isLoggedIn, upload.single('office[floorPlan]'), validateOffice, catchAsync(async (req, res, next) => {
+    const office = await Office.findByIdAndUpdate(req.params.officeid, {...req.body.office})
+    if(req.file){
+        await cloudinary.uploader.destroy(office.floorPlan.filename)
+        office.floorPlan.url = req.file.path
+        office.floorPlan.filename = req.file.filename
+        office.save()
+    }
     req.flash('success', 'Congratulations! You have successfully updated your office!')
-    res.redirect(`${officeid}`)
+    res.redirect(`${req.params.officeid}`)
 }))
 
 module.exports = router

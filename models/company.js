@@ -3,7 +3,10 @@ const Schema = mongoose.Schema
 
 const CompanySchema = new Schema({
     companyName: String,
-    companyLogo: String,
+    companyLogo: {
+        url: String,
+        filename: String
+    },
     uniqueCompanyCode: String,
     companyPasscode: String,
     employees: [

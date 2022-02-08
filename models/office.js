@@ -10,7 +10,10 @@ const OfficeSchema = new Schema({
         county: String,
         postcode: String
     },
-    floorPlan: String,
+    floorPlan: {
+        url: String,
+        filename: String
+    },
     desks: [
         {
             deskNumber: Number,

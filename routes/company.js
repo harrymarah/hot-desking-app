@@ -6,21 +6,26 @@ const {validateCompany, hashPasscode, isLoggedIn, isAdmin} = require('../middlew
 const Company = require('../models/company')
 const User = require('../models/user')
 
+const multer = require('multer')
+const {storage, cloudinary} = require('../cloudinary')
+const upload = multer({storage})
+
 router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.user._id)
     const company = await Company.find({employees: user})
     res.render('company/index', {company})
 }))
 
-router.post('/', isLoggedIn, isAdmin, validateCompany, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, isAdmin, upload.single('company[companyLogo]'), validateCompany, catchAsync(async (req, res) => {
     const company = new Company(req.body.company)
-    const user = req.user._id
-    const adminUser = await User.findById(user)
+    const user = await User.findById(req.user._id)
     company.companyPasscode = await hashPasscode(req.body.company.companyPasscode)
     company.employees.push(user)
-    adminUser.company = company
+    user.company = company
+    company.companyLogo.url = req.file.path
+    company.companyLogo.filename = req.file.filename
     await company.save()
-    await adminUser.save()
+    await user.save()
     req.flash('success', 'Congratulations! You have successfully registered your company!')
     res.redirect(`company/${company._id}`)
 }))
@@ -48,9 +53,17 @@ router.get('/:id/edit', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
 }))
 
 
-router.put('/:id', isLoggedIn, isAdmin, validateCompany, catchAsync(async (req, res, next) => {
+router.put('/:id', isLoggedIn, isAdmin, upload.single('company[companyLogo]'), catchAsync(async (req, res, next) => {
     const {id} = req.params
-    await Company.findByIdAndUpdate(id, {...req.body.company})
+    const company = await Company.findByIdAndUpdate(id, {...req.body.company})
+    if(req.file){
+        console.log(req.file)
+        console.log(company)
+        await cloudinary.uploader.destroy(company.companyLogo.filename)
+        company.companyLogo.url = req.file.path
+        company.companyLogo.filename = req.file.filename
+        company.save()
+    }
     req.flash('success', 'Congratulations! You have successfully updated your company!')
     res.redirect(`${id}`)
 }))
