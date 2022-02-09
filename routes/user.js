@@ -68,7 +68,8 @@ router.post('/register-employee', catchAsync(async (req, res) => {
 }))
 
 router.get('/login', (req, res) => {
-    res.render('users/login')
+    if(req.user) return res.redirect('/company')
+    else return res.render('users/login')
 })
 
 router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) => {

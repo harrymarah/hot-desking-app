@@ -12,8 +12,8 @@ const upload = multer({storage})
 
 router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.user._id)
-    const company = await Company.find({employees: user})
-    res.render('company/index', {company})
+    const company = await Company.findOne({employees: user}).populate({path: 'offices'})
+    res.render('company/show', {company})
 }))
 
 router.post('/', isLoggedIn, isAdmin, upload.single('company[companyLogo]'), validateCompany, catchAsync(async (req, res) => {
@@ -35,7 +35,7 @@ router.get('/new', isLoggedIn, isAdmin, (req,res) => {
 })
 
 router.get('/:id', isLoggedIn, catchAsync(async (req,res) => {
-    const company = await (await Company.findById(req.params.id)).populate({path: 'offices'})
+    const company = await Company.findById(req.params.id).populate({path: 'offices'})
     if(!company){
         req.flash('error', 'Company not found')
         return res.redirect('/company')
@@ -57,8 +57,6 @@ router.put('/:id', isLoggedIn, isAdmin, upload.single('company[companyLogo]'), c
     const {id} = req.params
     const company = await Company.findByIdAndUpdate(id, {...req.body.company})
     if(req.file){
-        console.log(req.file)
-        console.log(company)
         await cloudinary.uploader.destroy(company.companyLogo.filename)
         company.companyLogo.url = req.file.path
         company.companyLogo.filename = req.file.filename

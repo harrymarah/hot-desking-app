@@ -10,6 +10,17 @@ const OfficeSchema = new Schema({
         county: String,
         postcode: String
     },
+    geometry: {
+        type: {
+            type: String,
+            enum: 'Point',
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }  
+    },
     floorPlan: {
         url: String,
         filename: String

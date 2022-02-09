@@ -1,6 +1,7 @@
 const {companySchema, officeSchema, bookingSchema} = require('./schemas')
 const ExpressError = require('./utils/ExpressError')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const Booking = require('./models/booking');
 
 
 module.exports.validateCompany = (req, res, next) => {
@@ -47,8 +48,37 @@ module.exports.isLoggedIn = (req, res, next) => {
     next()
 }
 
-module.exports.isOwnerOrAdmin = (req, res, next) => {
-    
+module.exports.isBookingOwnerOrAdmin = async(req, res, next) => {
+    const {id, officeid, bookingId} = req.params
+    const booking = await Booking.findById(bookingId)
+    if(req.user.isAdmin) return next()
+    if(booking.bookedAM && booking.bookedPM){
+        if(!booking.bookedAMBy.equals(req.user._id) && !booking.bookedPMBy.equals(req.user._id)){
+            req.flash('error', 'You cannot delete other users bookings.')
+            return res.redirect(req.headers.referer)
+        }
+    } else if (booking.bookedAM) {
+        if(!booking.bookedAMBy.equals(req.user._id)){
+            req.flash('error', 'You cannot delete other users bookings.')
+            return res.redirect(req.headers.referer)
+        }
+    } else if (booking.bookedPM){
+        if(!booking.bookedPMBy.equals(req.user._id)){
+            req.flash('error', 'You cannot delete other users bookings.')
+            return res.redirect(`/company/${id}/${officeid}`)
+        }
+    }
+    next()
+}
+
+module.exports.isOwner = async(req, res, next) => {
+    const {id} = req.params;
+    const business = await Business.findById(id);
+    if(!business.addedBy.equals(req.user._id)){
+        req.flash('error', 'You do not have permission to do that.');
+        return res.redirect(`/business/${id}`);
+    }
+    next();
 }
 
 module.exports.isAdmin = (req, res, next) => {

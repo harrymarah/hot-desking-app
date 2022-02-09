@@ -10,6 +10,10 @@ const multer = require('multer')
 const {storage, cloudinary} = require('../cloudinary')
 const upload = multer({storage})
 
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({accessToken: mapBoxToken});
+
 router.get('/newoffice', isLoggedIn, catchAsync(async (req, res) => {
     const company = await Company.findById(req.params.id)
     res.render('office/new', {company})
@@ -19,6 +23,11 @@ router.post('/office', upload.single('office[floorPlan]'), validateOffice, catch
     const {id} = req.params
     const company = await Company.findById(id)
     const office = new Office(req.body.office)
+    const geoData = await geocoder.forwardGeocode({
+        query: Object.values(req.body.office.officeAddress).join(', '),
+        limit: 1
+    }).send()
+    office.geometry = geoData.body.features[0].geometry;
     company.offices.push(office)
     for(let i = 0; i < req.body.noOfDesks; i++){
         await office.desks.push({deskNumber: i + 1})

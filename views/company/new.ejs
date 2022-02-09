@@ -1,57 +1,56 @@
 <%- layout('layouts/boilerplate') %> 
 
-<div class="container mt-5">
-    <h1 class="p-2 display-3">Add your company</h1>
 
-    <form class="p-2 needs-validation" action="/company" method="POST" novalidate enctype="multipart/form-data">
-        <div class="my-3">
+<div class="container d-flex justify-content-center align-items-center my-5">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title">Add your company</h2>
+                    <form class="p-2 needs-validation" action="/company" method="POST" novalidate enctype="multipart/form-data">
+                        <div class="my-3">
+                
+                            <label class="form-label" for="name">Company Name:</label>
+                            <input class="form-control" type="text" id="name" name="company[companyName]" required>
+                            
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Please add your company name.</div>
+                
+                        </div>
+                        
+                        <div class="my-3">
+                            <label for="company-logo" class="form-label">Company Logo:</label>
+                            <input class="form-control" type="file" id="company-logo" name="company[companyLogo]" required>
+                
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Please upload an image of your company logo.</div>
+                
+                        </div>
+                        <div class="my-3">
+                            <label class="form-label" for="businessCode">Unique Business Code:</label>
+                            <input class="form-control" type="text" id="businessCode" name="company[uniqueCompanyCode]" required>
+                
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Please enter a unique company ID that your employees can use to connect with the business.</div>
+                
+                        </div>
+                
+                        <div class="my-3">
+                            <label class="form-label" for="companyPasscode">Company Passcode:</label>
+                            <input class="form-control" type="password" id="companyPasscode" name="company[companyPasscode]" required>
+                
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Please enter a passcode that will be used to allow employees to register.</div>
+                
+                        </div>
 
-            <label class="form-label" for="name">Company Name:</label>
-            <input class="form-control" type="text" id="name" name="company[companyName]" required>
-            
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please add your company name.</div>
-
+                        <div class="d-grid mt-3">
+                            <button class='btn btn-success'>Add</button>
+                        </div>
+                    </form> 
+                </div>
+            </div>
         </div>
-        <!-- <div class="my-3">
-            <label class="form-label" for="name">Company Logo Link:</label>
-            <input class="form-control" type="text" id="name" name="company[companyLogo]" required>
-
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please upload an image of your company logo.</div>
-
-        </div> -->
-        <div class="my-3">
-            <label for="company-logo" class="form-label">Company Logo:</label>
-            <input class="form-control" type="file" id="company-logo" name="company[companyLogo]" required>
-
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please upload an image of your company logo.</div>
-
-        </div>
-        <div class="my-3">
-            <label class="form-label" for="businessCode">Unique Business Code:</label>
-            <input class="form-control" type="text" id="businessCode" name="company[uniqueCompanyCode]" required>
-
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter a unique company ID that your employees can use to connect with the business.</div>
-
-        </div>
-
-        <div class="my-3">
-            <label class="form-label" for="companyPasscode">Company Passcode:</label>
-            <input class="form-control" type="password" id="companyPasscode" name="company[companyPasscode]" required>
-
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Please enter a passcode that will be used to allow employees to register.</div>
-
-        </div>
-        <input class="btn btn-primary" type="submit" value="Submit">
-    </form>
-    
+    </div>
 </div>
-
-
-
-
 

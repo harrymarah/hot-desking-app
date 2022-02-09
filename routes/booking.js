@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
 const catchAsync = require('../utils/catchAsync')
-const {validateBooking, isLoggedIn} = require('../middleware')
+const {validateBooking, isLoggedIn, isBookingOwnerOrAdmin} = require('../middleware')
 
 const Booking = require('../models/booking')
 const Office = require('../models/office')
@@ -44,7 +44,7 @@ router.post('/', isLoggedIn, validateBooking, catchAsync(async (req, res, next) 
     res.redirect(`/company/${company._id}/${office._id}`)
 }))
 
-router.delete('/:bookingId', isLoggedIn, catchAsync(async (req, res, next) => {
+router.delete('/:bookingId', isLoggedIn, isBookingOwnerOrAdmin, catchAsync(async (req, res, next) => {
     const office =  await Office.findById(req.params.officeid)
     const company = await Company.findById(req.params.id)
     const {bookingId} = req.params
