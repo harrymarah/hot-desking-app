@@ -11,7 +11,7 @@ const multer = require('multer')
 const {storage, cloudinary} = require('../cloudinary')
 const upload = multer({storage})
 
-router.get('/', isLoggedIn, isEmployee, catchAsync(async (req, res) => {
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.user._id)
     const company = await Company.findOne({employees: user}).populate({path: 'offices'})
     res.render('company/show', {company})

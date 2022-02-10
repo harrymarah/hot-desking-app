@@ -84,7 +84,7 @@ router.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
-router.get('/mybookings', isLoggedIn, isEmployee, catchAsync(async(req, res) => {
+router.get('/mybookings', isLoggedIn, catchAsync(async(req, res) => {
     const user = await User.findById(req.user._id)
     .populate({
         path: 'bookings',

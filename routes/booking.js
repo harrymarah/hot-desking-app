@@ -49,7 +49,6 @@ router.delete('/:bookingId', isLoggedIn, isBookingOwnerOrAdmin, isEmployee, catc
     const company = await Company.findById(req.params.id)
     const {bookingId} = req.params
     await Booking.findByIdAndDelete(bookingId)
-    console.log(req.headers.referer)
     const referer = req.headers.referer
     req.flash('success', 'Booking successfully deleted.')
     res.redirect(referer)

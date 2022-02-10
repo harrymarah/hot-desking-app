@@ -92,8 +92,6 @@ module.exports.isAdmin = (req, res, next) => {
 
 module.exports.isEmployee = async (req, res, next) => {
     const company = await Company.findById(req.params.id)
-    console.log(company._id)
-    console.log(req.user.company._id)
     if(req.user.company._id.toString() !== company._id.toString()){
         req.flash('error', 'You do not belong to that company!')
         return res.redirect('/company')

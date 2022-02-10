@@ -62,13 +62,34 @@ router.get('/:officeid/edit', isLoggedIn, isAdmin, isEmployee, catchAsync(async 
 }))
 
 router.put('/:officeid', isLoggedIn, isAdmin, isEmployee, upload.single('office[floorPlan]'), validateOffice, catchAsync(async (req, res, next) => {
-    const office = await Office.findByIdAndUpdate(req.params.officeid, {...req.body.office})
+    const office = await Office.findByIdAndUpdate(req.params.officeid, {...req.body.office}).populate({path: 'desks.bookings'})
+    const newNoOfDesks = parseInt(req.body.noOfDesks)
+    if(newNoOfDesks > office.desks.length){
+        const difference = newNoOfDesks - office.desks.length
+        for(let i = 0; i < difference; i++){
+            await office.desks.push({deskNumber: office.desks.length + i + 1})
+        }
+    }
+    if(newNoOfDesks < office.desks.length){
+        const difference = office.desks.length - newNoOfDesks
+        console.log(office.desks)
+        for(let i = office.desks.length; i > newNoOfDesks; i--){
+            office.desks[i-1].bookings.forEach(b => b.deleteOne())
+            office.desks.pop()
+            console.log(office.desks)
+        }
+    }
     if(req.file){
         await cloudinary.uploader.destroy(office.floorPlan.filename)
         office.floorPlan.url = req.file.path
         office.floorPlan.filename = req.file.filename
-        office.save()
     }
+    const geoData = await geocoder.forwardGeocode({
+        query: Object.values(req.body.office.officeAddress).join(', '),
+        limit: 1
+    }).send()
+    office.geometry = geoData.body.features[0].geometry;
+    office.save()
     req.flash('success', 'Congratulations! You have successfully updated your office!')
     res.redirect(`${req.params.officeid}`)
 }))
