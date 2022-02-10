@@ -19,6 +19,7 @@ router.get('/', isLoggedIn, catchAsync(async (req, res) => {
 router.post('/', isLoggedIn, isAdmin, upload.single('company[companyLogo]'), validateCompany, catchAsync(async (req, res) => {
     const company = new Company(req.body.company)
     const user = await User.findById(req.user._id)
+    company.uniqueCompanyCode.toUpperCase()
     company.companyPasscode = await hashPasscode(req.body.company.companyPasscode)
     company.employees.push(user)
     user.company = company

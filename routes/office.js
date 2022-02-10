@@ -41,7 +41,7 @@ router.post('/office', upload.single('office[floorPlan]'), validateOffice, catch
 }))
 
 router.get('/:officeid', isLoggedIn, catchAsync(async (req, res) => {
-    const office = await Office.findById(req.params.officeid).populate({path: 'desks.bookings',})
+    const office = await Office.findById(req.params.officeid).populate({path: 'desks.bookings', populate: {path: 'bookedAMBy bookedPMBy'}})
     const company = await Company.findById(req.params.id)
     if(!office){
         req.flash('error', 'Office not found')
