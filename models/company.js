@@ -7,7 +7,10 @@ const CompanySchema = new Schema({
         url: String,
         filename: String
     },
-    uniqueCompanyCode: String,
+    uniqueCompanyCode: {
+        type: String,
+        uppercase: true
+    },
     companyPasscode: String,
     employees: [
         {

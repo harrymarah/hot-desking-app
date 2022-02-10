@@ -76,8 +76,8 @@ router.put('/:officeid', isLoggedIn, isAdmin, isEmployee, upload.single('office[
         for(let i = office.desks.length; i > newNoOfDesks; i--){
             office.desks[i-1].bookings.forEach(b => b.deleteOne())
             office.desks.pop()
-            console.log(office.desks)
         }
+        req.flash('warning', 'Previous bookings may have been lost due to the number of desks being reduced.')
     }
     if(req.file){
         await cloudinary.uploader.destroy(office.floorPlan.filename)

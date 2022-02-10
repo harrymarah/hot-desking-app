@@ -14,13 +14,14 @@ const upload = multer({storage})
 router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     const user = await User.findById(req.user._id)
     const company = await Company.findOne({employees: user}).populate({path: 'offices'})
+    if(!company) res.redirect('company/new')
     res.render('company/show', {company})
 }))
 
-router.post('/', isLoggedIn, isAdmin, isEmployee, upload.single('company[companyLogo]'), validateCompany, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, isAdmin, upload.single('company[companyLogo]'), validateCompany, catchAsync(async (req, res) => {
     const company = new Company(req.body.company)
     const user = await User.findById(req.user._id)
-    company.uniqueCompanyCode.toUpperCase()
+    company.uniqueCompanyCode = company.uniqueCompanyCode.toUpperCase()
     company.companyPasscode = await hashPasscode(req.body.company.companyPasscode)
     company.employees.push(user)
     user.company = company
@@ -32,7 +33,7 @@ router.post('/', isLoggedIn, isAdmin, isEmployee, upload.single('company[company
     res.redirect(`company/${company._id}`)
 }))
 
-router.get('/new', isLoggedIn, isAdmin, isEmployee, (req,res) => {
+router.get('/new', isLoggedIn, isAdmin, (req,res) => {
     res.render('company/new')
 })
 
