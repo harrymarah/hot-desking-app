@@ -32,17 +32,15 @@
     href="/company/<%= company._id %>/edit"
     >Edit company</a
   >
-  <form
-    class="d-inline"
-    action="/company/<%= company._id %>?_method=DELETE"
-    method="POST"
+  <button
+    type="button"
+    class="btn btn-outline-danger btn-sm m-2"
+    data-bs-toggle="modal"
+    data-bs-target="#deleteModal"
   >
-    <input
-      class="btn btn-outline-danger btn-sm m-2"
-      type="submit"
-      value="Delete Company"
-    />
-  </form>
+    Delete company
+  </button>
+
   <a
     href="/company/<%= company._id %>/newoffice"
     class="btn btn-outline-info btn-sm m-2"
@@ -101,3 +99,43 @@
   <% } %>
 </div>
 <% } %>
+
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteCompanyModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCompanyModal">
+          Are you sure you want to delete this company?
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Deleting the company will also delete all associated offices, users and
+        bookings. Once done this cannot be reversed.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          No, take me back!
+        </button>
+        <form
+          class="d-inline"
+          action="/company/<%= company._id %>?_method=DELETE"
+          method="POST"
+        >
+          <input class="btn btn-danger" type="submit" value="Delete Company" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

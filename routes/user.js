@@ -8,7 +8,7 @@ const Office = require('../models/office')
 const { models } = require('mongoose')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
-const {isLoggedIn, isAdmin} = require('../middleware')
+const {isLoggedIn, isAdmin, isEmployee} = require('../middleware')
 
 router.get('/register-admin', (req, res) => {
     res.render('users/register-admin')
@@ -84,7 +84,7 @@ router.get('/logout', (req, res) => {
     res.redirect('/')
 })
 
-router.get('/mybookings', isLoggedIn, catchAsync(async(req, res) => {
+router.get('/mybookings', isLoggedIn, isEmployee, catchAsync(async(req, res) => {
     const user = await User.findById(req.user._id)
     .populate({
         path: 'bookings',
@@ -94,7 +94,7 @@ router.get('/mybookings', isLoggedIn, catchAsync(async(req, res) => {
     res.render('bookings/show', {user, company})
 }))
 
-router.get('/admin-panel', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/admin-panel', isLoggedIn, isAdmin, isEmployee, catchAsync(async(req, res) => {
     const users = await User.find({company: req.user.company})
     const company = await Company.find({employees: req.user._id})
     .populate({path: 'offices', 

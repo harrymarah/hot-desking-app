@@ -27,6 +27,7 @@ module.exports.officeSchema = Joi.object({
             county: Joi.string(),
             postcode: Joi.string().required()
         }).required(),
+        geometry: Joi.object(),
         floorPlan: Joi.object({
             url: Joi.string(),
             filename: Joi.string()

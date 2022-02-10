@@ -3,10 +3,17 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
 
+<% if(currentUser.isAdmin){ %> 
+  
+<% } %> 
 <div class="row">
   <h2 class="display-5 text-center">Welcome to <%= office.officeAddress.streetAddress %></h2>
+  <div class="d-flex justify-content-center">
+    <a href="<%=office._id %>/edit"><span class="badge bg-warning m-1">Edit Office</span></a>
+    <span class="badge bg-danger m-1" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Office</span>
+  </div>
   <h4 class="text-muted text-center"><em><%= office.officeNickname %></em></h4>
-  <h6 class=" text-center"><em><%= company.companyName %></em></h5>  
+  <h6 class=" text-center"><em><%= company.companyName %></em></h5>
 </div>
 <div class="row">
   <div class="col-md-6">
@@ -113,7 +120,7 @@
 
 
 
-
+<!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
@@ -129,6 +136,25 @@
       </div>
     </div>
   </div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this office?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Deleting this office will also remove all ascociated bookings. These cannot be recovered once deleted.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">No, take me back!</button>
+        <form action="/company/<%= company._id %>/<%= office._id %>?_method=DELETE" method="POST"><button type="submit" class="btn btn-danger btn-sm">Yes I'm sure.</button></form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   const deskSelector = document.querySelector('#deskSelector')

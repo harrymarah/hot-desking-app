@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
 const catchAsync = require('../utils/catchAsync')
-const {validateBooking, isLoggedIn, isBookingOwnerOrAdmin} = require('../middleware')
+const {validateBooking, isLoggedIn, isBookingOwnerOrAdmin, isEmployee} = require('../middleware')
 
 const Booking = require('../models/booking')
 const Office = require('../models/office')
@@ -10,7 +10,7 @@ const User = require('../models/user')
 const ExpressError = require('../utils/ExpressError')
 const user = require('../models/user')
 
-router.post('/', isLoggedIn, validateBooking, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, isEmployee, validateBooking, catchAsync(async (req, res, next) => {
     if(req.body.booking.bookedAM !== 'on' && req.body.booking.bookedPM !== 'on') throw new ExpressError('You must choose a time slot for your booking.', 400)
     const booking = new Booking(req.body.booking)
     const office =  await Office.findById(req.params.officeid)
@@ -44,7 +44,7 @@ router.post('/', isLoggedIn, validateBooking, catchAsync(async (req, res, next) 
     res.redirect(`/company/${company._id}/${office._id}`)
 }))
 
-router.delete('/:bookingId', isLoggedIn, isBookingOwnerOrAdmin, catchAsync(async (req, res, next) => {
+router.delete('/:bookingId', isLoggedIn, isBookingOwnerOrAdmin, isEmployee, catchAsync(async (req, res, next) => {
     const office =  await Office.findById(req.params.officeid)
     const company = await Company.findById(req.params.id)
     const {bookingId} = req.params

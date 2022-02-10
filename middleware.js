@@ -2,6 +2,7 @@ const {companySchema, officeSchema, bookingSchema} = require('./schemas')
 const ExpressError = require('./utils/ExpressError')
 const bcrypt = require('bcrypt');
 const Booking = require('./models/booking');
+const Company = require('./models/company')
 
 
 module.exports.validateCompany = (req, res, next) => {
@@ -84,6 +85,17 @@ module.exports.isOwner = async(req, res, next) => {
 module.exports.isAdmin = (req, res, next) => {
     if(!req.user.isAdmin){
         req.flash('error', 'You do not have permission to do that!')
+        return res.redirect('/company')
+    }
+    next()
+}
+
+module.exports.isEmployee = async (req, res, next) => {
+    const company = await Company.findById(req.params.id)
+    console.log(company._id)
+    console.log(req.user.company._id)
+    if(req.user.company._id.toString() !== company._id.toString()){
+        req.flash('error', 'You do not belong to that company!')
         return res.redirect('/company')
     }
     next()
