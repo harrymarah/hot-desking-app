@@ -1,12 +1,12 @@
-<%- layout('layouts/boilerplate') %> 
-
+<%- layout('layouts/boilerplate') %>
 
 <div class="container">
-    <div class="alert alert-danger col-6 offset-3 mt-5" role="alert">
-        <h4 class="alert-heading">Error <%= err.statusCode %> </h4>
-        <p><%= err.message  %> </p>
-        <hr>
-        <p class="mb-0"><%= err.stack %> </p>
-    </div>
+  <div class="alert alert-danger col-6 offset-3 mt-5" role="alert">
+    <h4 class="alert-heading">Error <%= err.statusCode %></h4>
+    <p><%= err.message %></p>
+    <% if(process.env.NODE_ENV !== "production"){ %>
+    <hr />
+    <p class="mb-0"><%= err.stack %></p>
+    <% } %>
+  </div>
 </div>
-

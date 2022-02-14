@@ -14,6 +14,10 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const CronJob = require('cron').CronJob
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet')
+const MongoStore = require('connect-mongo')
+
 const User = require('./models/user')
 const Booking = require('./models/booking')
 
@@ -22,7 +26,9 @@ const offices = require('./routes/office')
 const bookings = require('./routes/booking')
 const users = require('./routes/user')
 
-mongoose.connect('mongodb://localhost:27017/hot-desk', {
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/hot-desk'
+
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -37,21 +43,85 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'))
-
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
+
+const secret = process.end.SECRET || 'thisisasecret'
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret
+    }
+});
+
+store.on('error', function(e) {
+    console.log('Session store error')
+})
 
 const sessionConfig = {
-    secret: 'thisisasecret',
+    store,
+    name: 'session',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true,
         expires: Date.now() + 604800000, //miliseconds in a week
         maxAge: 604800000,
     }
 }
 app.use(session(sessionConfig))
 app.use(flash())
+
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net",
+    "https://cdnjs.cloudflare.com"
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+const fontSrcUrls = ["https://cdnjs.cloudflare.com"];
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/dtyeth4uh/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
 
 app.use(passport.initialize())
 app.use(passport.session())
@@ -96,7 +166,9 @@ app.use((err, req, res, next) => {
     if(!err.message) err.message = 'Oh no, something went wrong!'
     res.status(statusCode)
     if(statusCode === 404) return res.render('404')
-    res.render('error', {err})
+    req.flash('error', err.message)
+    console.log(err)
+    res.redirect('back')
 })
 
 app.listen(3000, () => {
