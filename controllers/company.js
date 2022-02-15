@@ -1,5 +1,6 @@
 const Company = require('../models/company')
 const User = require('../models/user')
+const {hashPasscode} = require('../middleware')
 
 module.exports.renderCompanyPage = async (req, res) => {
     const user = await User.findById(req.user._id)
