@@ -1,0 +1,7 @@
+@media screen and (max-width: 800px) {
+  hmtl,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
