@@ -27,6 +27,8 @@ const bookings = require('./routes/booking')
 const users = require('./routes/user')
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/hot-desk'
+console.log(dbUrl)
+
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
@@ -68,7 +70,6 @@ const sessionConfig = {
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        secure: true,
         expires: Date.now() + 604800000, //miliseconds in a week
         maxAge: 604800000,
     }
